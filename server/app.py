@@ -27,5 +27,21 @@ class TablesById(Resource):
 
 api.add_resource(TablesById, '/tables/<int:id>')
 
+class Columns(Resource):
+    def post(self):
+        data = request.get_json()
+        new_column = Column(
+            name=data['name'],
+            column_type=data['column_type'],
+            is_pk=data['is_pk'],
+            in_repr=data['in_repr'],
+            table_id=data['table_id']
+        )
+        db.session.add(new_column)
+        db.session.commit()
+        return make_response(new_column.to_dict(), 201)
+
+api.add_resource(Columns, '/columns')
+
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

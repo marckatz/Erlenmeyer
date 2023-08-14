@@ -15,7 +15,14 @@ function NewColumn(){
             in_repr:false,
             table_id:tableId
         }
-        console.log(new_column)
+        // console.log(new_column)
+        fetch('http://localhost:5555/columns', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(new_column)
+        })
+        .then(r => r.json())
+        .then(data => console.log(data))
     }
 
     return (
