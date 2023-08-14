@@ -33,7 +33,7 @@ class Schema(db.Model, SerializerMixin):
                     relationships += f"'{r.from_many.table.name.capitalize()}', back_populates='{r.to_one.table.name.lower()}s')\n"
 
                 
-                table_string += f'\t{column.name.lower()} = db.Column(db.{column.column_type_string}'
+                table_string += f'\t{column.name.lower()} = db.Column(db.{column.column_type}'
                 if column.is_pk:
                     table_string += ', primary_key=True'
                 if fkey != '':

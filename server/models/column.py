@@ -4,7 +4,7 @@ from config import db
 
 class Column(db.Model, SerializerMixin):
     # TODO: Change type to just be a string, will make things easier. Remember to change in export and react code where needed
-    TYPES = ['Integer', 'String', 'Text', 'DateTime', 'Float', 'Boolean', 'PickleType', 'LargeBinary']
+    # TYPES = ['Integer', 'String', 'Text', 'DateTime', 'Float', 'Boolean', 'PickleType', 'LargeBinary']
 
     __tablename__ = 'columns'
     
@@ -19,11 +19,7 @@ class Column(db.Model, SerializerMixin):
     from_many_relationships = db.relationship('Relationship', back_populates='from_many', foreign_keys='Relationship.from_many_id', cascade='all,delete-orphan')
     to_one_relationships = db.relationship('Relationship', back_populates='to_one', foreign_keys='Relationship.to_one_id', cascade='all,delete-orphan')
 
-    @property
-    def column_type_string(self):
-        return Column.TYPES[int(self.column_type)]
-
-    serialize_rules = ('-table.rows', '-from_many_relationships', '-to_one_relationships', '-column_type', 'column_type_string')
+    serialize_rules = ('-table.rows', '-from_many_relationships', '-to_one_relationships')
 
     def __repr__(self):
         return f'<Column {self.id} {self.name}>'
