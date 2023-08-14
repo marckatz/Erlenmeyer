@@ -20,5 +20,12 @@ class Users(Resource):
 
 api.add_resource(Users, '/users')
 
+class TablesById(Resource):
+    def get(self, id):
+        table = Table.query.filter_by(id=id).first()
+        return make_response(table.to_dict(), 200)
+
+api.add_resource(TablesById, '/tables/<int:id>')
+
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

@@ -22,7 +22,7 @@ class Column(db.Model, SerializerMixin):
     def column_type_string(self):
         return Column.TYPES[int(self.column_type)]
 
-    serialize_rules = ('-table.rows', '-from_many_relationships', '-to_one_relationships')
+    serialize_rules = ('-table.rows', '-from_many_relationships', '-to_one_relationships', '-column_type', 'column_type_string')
 
     def __repr__(self):
         return f'<Column {self.id} {self.name}>'

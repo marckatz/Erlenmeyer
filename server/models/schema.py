@@ -21,22 +21,27 @@ class Schema(db.Model, SerializerMixin):
             relationships = ''
             table_string = f'class {table.name.capitalize()}(db.Model):\n'
             table_string += f"\t__tablename__ = '{table.name.lower()}s'\n\n"
+
             for column in table.columns:
-                table_string += f'\t{column.name.lower()} = db.Column(db.{column.column_type_string}'
-                if column.is_pk:
-                    table_string += ', primary_key=True'
-                # if column.foreign_key != '':
-                #     table_string += f', db.ForeignKey(\'{column.foreign_key}\')'
-                # if column.is_not_null:
-                #     table_string += ', nullable=False'
-                if column.in_repr:
-                    repr_string += f' {{self.{column.name.lower()}}}'
+                fkey = ''
                 for r in column.from_many_relationships:
                     relationships += f'\t{r.to_one.table.name.lower()}s = db.relationship('
                     relationships += f"'{r.to_one.table.name.capitalize()}', back_populates='{r.from_many.table.name.lower()}', cascade='add,delete-orphan')\n"
                 for r in column.to_one_relationships:
+                    fkey = f'{r.from_many.table.name.lower()}s.{r.from_many.name}'
                     relationships += f'\t{r.from_many.table.name.lower()} = db.relationship('
                     relationships += f"'{r.from_many.table.name.capitalize()}', back_populates='{r.to_one.table.name.lower()}s')\n"
+
+                
+                table_string += f'\t{column.name.lower()} = db.Column(db.{column.column_type_string}'
+                if column.is_pk:
+                    table_string += ', primary_key=True'
+                if fkey != '':
+                    table_string += f', db.ForeignKey(\'{fkey}\')'
+                # if column.is_not_null:
+                #     table_string += ', nullable=False'
+                if column.in_repr:
+                    repr_string += f' {{self.{column.name.lower()}}}'
                 table_string += ')\n'
             repr_string += '>\''
             output += table_string + '\n' + relationships + '\n' + repr_string + '\n\n'

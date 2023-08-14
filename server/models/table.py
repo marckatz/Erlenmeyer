@@ -12,7 +12,7 @@ class Table(db.Model, SerializerMixin):
     schema = db.relationship('Schema', back_populates='tables')
     columns = db.relationship('Column', back_populates='table', cascade='all,delete-orphan')
 
-    serialize_rules = ('-schema.tables','-columns.table')
+    serialize_rules = ('-columns.table', '-schema',)
 
     def __repr__(self):
         return f'<Table {self.id}: {self.name}>'
