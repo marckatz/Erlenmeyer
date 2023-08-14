@@ -3,10 +3,6 @@ import React, { useEffect } from "react";
 function ColumnCard({column}) {
     const {id, name, column_type_string, is_pk} = column
 
-    useEffect(()=>{
-        console.log('ok')
-    },[])
-
     return (
         <div className="row">
             <div className="col">Column</div>

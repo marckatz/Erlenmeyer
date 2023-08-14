@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ColumnCard from "./ColumnCard";
+import NewColumn from "./NewColumn";
 
 function TableCard({tableId}) {
     const [columns, setColumns] = useState([])
@@ -24,6 +25,7 @@ function TableCard({tableId}) {
         <div className="container">
             <div className="row">{tableName}</div>
             {create_rows}
+            <NewColumn />
         </div>
     )
 }
