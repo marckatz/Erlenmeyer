@@ -1,11 +1,21 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { TableIdContext } from "../context/table";
 
 function NewColumn(){
     const [colName, setColName] = useState('')
     const [colType, setColType] = useState(0)
+    const tableId = useContext(TableIdContext)
 
     function handleSubmit(e){
         e.preventDefault()
+        const new_column = {
+            name: colName,
+            column_type:colType,
+            is_pk:false,
+            in_repr:false,
+            table_id:tableId
+        }
+        console.log(new_column)
     }
 
     return (

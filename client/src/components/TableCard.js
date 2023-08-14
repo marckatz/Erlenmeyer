@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ColumnCard from "./ColumnCard";
 import NewColumn from "./NewColumn";
+import { TableIdContext } from "../context/table";
 
 function TableCard({tableId}) {
     const [columns, setColumns] = useState([])
@@ -14,7 +15,6 @@ function TableCard({tableId}) {
             setColumns(t.columns)
             setName(t.name)
         })
-        // .then(t => setTable(t))
     },[])
 
     const create_rows = columns.map(col => {
@@ -22,11 +22,13 @@ function TableCard({tableId}) {
         });
 
     return (
-        <div className="container">
-            <div className="row">{tableName}</div>
-            {create_rows}
-            <NewColumn />
-        </div>
+        <TableIdContext.Provider value={tableId}>
+            <div className="container">
+                <div className="row">{tableName}</div>
+                {create_rows}
+                <NewColumn />
+            </div>
+        </TableIdContext.Provider>
     )
 }
 
