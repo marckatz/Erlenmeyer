@@ -12,7 +12,7 @@ if __name__ == '__main__':
         Relationship.query.delete()
 
 
-        user1 = User(username='Marc')
+        user1 = User(username='Marc', password_hash='123456')
         db.session.add(user1)
 
         schema1 = Schema(name='Wiccapedia')
