@@ -16,7 +16,7 @@ function TableCard({table}) {
             table_id:id
         }
         // console.log(new_column)
-        fetch('http://localhost:5555/columns', {
+        fetch('/columns', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(new_column)

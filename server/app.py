@@ -23,7 +23,10 @@ api.add_resource(Users, '/users')
 class SchemasById(Resource):
     def get(self, id):
         schema = Schema.query.filter_by(id=id).first()
-        return make_response(schema.to_dict(), 200)
+        if schema:
+            return make_response(schema.to_dict(), 200)
+        else:
+            return make_response({'error':'Schema not found'}, 404)
 
 api.add_resource(SchemasById, '/schemas/<int:id>')
 
@@ -49,6 +52,34 @@ class Columns(Resource):
         return make_response(new_column.to_dict(), 201)
 
 api.add_resource(Columns, '/columns')
+
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    username = data['username']
+    password = data['password']
+    user = User.query.filter_by(username=username).first()
+    if not user:
+        return make_response({'error': 'User not found'}, 404)
+    if user.authenticate(password):
+        session['user_id'] = user.id
+        return make_response(user.to_dict(only=('id','username','schemas.id', 'schemas.name')), 200)
+    else:
+        return make_response({'error': 'Incorrect password'}, 401)
+
+@app.route('/logout', methods=['DELETE'])
+def logout():
+    session['user_id'] = None
+    return make_response({'message': 'Logged out successfully'}, 204)
+
+@app.route('/check_session')
+def check_session ():
+    user = User.query.filter(User.id == session.get('user_id')).first()
+    if user:
+        return make_response(user.to_dict(only=('id','username','schemas.id', 'schemas.name')), 200)
+    else:
+        return make_response({'error': 'User not in session'}, 401)
+
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
