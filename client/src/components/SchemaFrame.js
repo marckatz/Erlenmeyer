@@ -1,27 +1,48 @@
 import React, { useContext, useEffect, useState } from "react";
 import TableCard from "./TableCard";
 import { UserContext } from "../context/user";
+import NewTable from "./NewTable";
 
 function SchemaFrame(){
     const {user, setUser} = useContext(UserContext)
     const [currentId, setCurrentId] = useState(0)
-    const [schema, setSchema] = useState({'name':'', 'tables':[]})
+    const [schema, setSchema] = useState(null)
+    const [reset, setReset] = useState(false)
 
     useEffect(() => {
         if(currentId !== 0){
             fetch(`/schemas/${currentId}`)
             .then(r => {
-                return r.ok ? r.json() : {'name':'Schema not found', 'tables':[]}
+                return r.ok ? r.json() : {}
             })
             .then(s => {
                 setSchema(s)
             })
         }
-    },[currentId])
+    },[currentId, reset])
 
-    const table_list = schema.tables.map(table => {
+    const table_list = schema && schema.tables.map(table => {
         return <TableCard key={table.id} table={table} />
     })
+
+    function handleNewTableSubmit(e, newTableName, setNewTableName){
+        e.preventDefault()
+        const newTable = {
+            name:newTableName,
+            schema_id:currentId
+        }
+        fetch('/tables', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(newTable)
+        })
+        .then(r=>r.json())
+        .then(t=>{
+            setSchema(s=> {return {'name':s.name, 'tables':[...s.tables, t]}})
+            setNewTableName('')
+            setReset(!reset)
+        })
+    }
 
     return (
         <div>
@@ -31,8 +52,9 @@ function SchemaFrame(){
                     {user.schemas.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
                 </select>
             </form>
-            <h1>{schema.name}</h1>
+            <h1>{schema && schema.name}</h1>
             {table_list}
+            {schema && <NewTable handleNewTableSubmit={handleNewTableSubmit}/>}
         </div>
     )
 }
