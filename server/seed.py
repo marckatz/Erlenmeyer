@@ -90,4 +90,33 @@ if __name__ == '__main__':
         )
         db.session.add(r1)
 
+        schema2 = Schema(name='food stuff')
+        db.session.add(schema2)
+        db.session.commit()
+
+        user_schema2 = UserSchema(user_id=user1.id, schema_id=schema2.id)
+        db.session.add(user_schema2)
+
+        ingredient_table = Table(name='ingredient', schema_id=schema2.id)
+        db.session.add(ingredient_table)
+        db.session.commit()
+
+        ing_id = Column(
+            name='id',
+            column_type='Integer',
+            is_pk=True,
+            in_repr=True,
+            table_id=ingredient_table.id
+        )
+
+        ing_name = Column(
+            name='name',
+            column_type='String',
+            is_pk=False,
+            in_repr=True,
+            table_id=ingredient_table.id
+        )
+        db.session.add_all([ing_id, ing_name])
+        db.session.commit()
+
         db.session.commit()
