@@ -3,7 +3,6 @@ from sqlalchemy_serializer import SerializerMixin
 from config import db
 
 class Column(db.Model, SerializerMixin):
-    # TODO: Change type to just be a string, will make things easier. Remember to change in export and react code where needed
     # TYPES = ['Integer', 'String', 'Text', 'DateTime', 'Float', 'Boolean', 'PickleType', 'LargeBinary']
 
     __tablename__ = 'columns'

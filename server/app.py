@@ -20,6 +20,13 @@ class Users(Resource):
 
 api.add_resource(Users, '/users')
 
+class SchemasById(Resource):
+    def get(self, id):
+        schema = Schema.query.filter_by(id=id).first()
+        return make_response(schema.to_dict(), 200)
+
+api.add_resource(SchemasById, '/schemas/<int:id>')
+
 class TablesById(Resource):
     def get(self, id):
         table = Table.query.filter_by(id=id).first()

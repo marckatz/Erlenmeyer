@@ -11,7 +11,7 @@ class Schema(db.Model, SerializerMixin):
     user_schemas = db.relationship('UserSchema', back_populates='schema', cascade='all,delete-orphan')
     tables = db.relationship('Table', back_populates='schema', cascade='all,delete-orphan')
 
-    serialize_rules = ('-user_schemas.schema',)
+    serialize_rules = ('-user_schemas', )
 
     #ignore header for now
     def export(self):

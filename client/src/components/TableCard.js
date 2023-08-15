@@ -1,34 +1,40 @@
 import React, { useEffect, useState } from "react";
 import ColumnCard from "./ColumnCard";
 import NewColumn from "./NewColumn";
-import { TableIdContext } from "../context/table";
 
-function TableCard({tableId}) {
-    const [columns, setColumns] = useState([])
-    const [tableName, setName] = useState('')
+function TableCard({table}) {
+    const {id, name} = table
+    const [columns, setColumns] = useState(table.columns)
 
-    useEffect(() => {
-        //TODO: Fix proxy
-        fetch(`http://localhost:5555/tables/${tableId}`)
-        .then(r => r.json())
-        .then(t => {
-            setColumns(t.columns)
-            setName(t.name)
+    function handleSubmit(e,colName,colType){
+        e.preventDefault()
+        const new_column = {
+            name: colName,
+            column_type:colType,
+            is_pk:false,
+            in_repr:false,
+            table_id:id
+        }
+        // console.log(new_column)
+        fetch('http://localhost:5555/columns', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(new_column)
         })
-    },[])
+        .then(r => r.json())
+        .then(data => setColumns(c => [...c, data]))
+    }
 
     const create_rows = columns.map(col => {
             return <ColumnCard key={col.id} column={col}/>
         });
 
     return (
-        <TableIdContext.Provider value={tableId}>
-            <div className="container">
-                <div className="row">{tableName}</div>
-                {create_rows}
-                <NewColumn />
-            </div>
-        </TableIdContext.Provider>
+        <div className="container">
+            <h2 className="row">Table: {name}</h2>
+            {create_rows}
+            <NewColumn handleSubmit={handleSubmit}/>
+        </div>
     )
 }
 

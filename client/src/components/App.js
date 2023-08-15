@@ -1,13 +1,19 @@
 import logo from '../logo.svg';
 import '../App.css';
-import TableCard from './TableCard';
+import { UserContext } from '../context/user';
+import { useEffect, useState } from 'react';
+import SchemaFrame from './SchemaFrame';
 
 function App() {
-  const tableId = 1
+  const [userId, setUserId] = useState(1)
+  const [schemaId, setSchemaId] = useState(1)
+
   return (
-    <div>
-      <TableCard tableId={tableId} />
-    </div>
+    <UserContext.Provider value={userId}>
+      <div>
+        <SchemaFrame schemaId={schemaId}/>
+      </div>
+    </UserContext.Provider>
   );
 }
 
