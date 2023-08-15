@@ -30,6 +30,16 @@ class SchemasById(Resource):
 
 api.add_resource(SchemasById, '/schemas/<int:id>')
 
+class Tables(Resource):
+    def post(self):
+        data = request.get_json()
+        new_table = Table(name=data['name'], schema_id=data['schema_id'])
+        db.session.add(new_table)
+        db.session.commit()
+        return make_response(new_table.to_dict(), 201)
+    
+api.add_resource(Tables, '/tables')
+
 class TablesById(Resource):
     def get(self, id):
         table = Table.query.filter_by(id=id).first()
