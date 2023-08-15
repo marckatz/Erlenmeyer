@@ -20,12 +20,35 @@ class Users(Resource):
 
 api.add_resource(Users, '/users')
 
+class SchemasById(Resource):
+    def get(self, id):
+        schema = Schema.query.filter_by(id=id).first()
+        return make_response(schema.to_dict(), 200)
+
+api.add_resource(SchemasById, '/schemas/<int:id>')
+
 class TablesById(Resource):
     def get(self, id):
         table = Table.query.filter_by(id=id).first()
         return make_response(table.to_dict(), 200)
 
 api.add_resource(TablesById, '/tables/<int:id>')
+
+class Columns(Resource):
+    def post(self):
+        data = request.get_json()
+        new_column = Column(
+            name=data['name'],
+            column_type=data['column_type'],
+            is_pk=data['is_pk'],
+            in_repr=data['in_repr'],
+            table_id=data['table_id']
+        )
+        db.session.add(new_column)
+        db.session.commit()
+        return make_response(new_column.to_dict(), 201)
+
+api.add_resource(Columns, '/columns')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

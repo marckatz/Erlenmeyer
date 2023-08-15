@@ -11,7 +11,7 @@ class Schema(db.Model, SerializerMixin):
     user_schemas = db.relationship('UserSchema', back_populates='schema', cascade='all,delete-orphan')
     tables = db.relationship('Table', back_populates='schema', cascade='all,delete-orphan')
 
-    serialize_rules = ('-user_schemas.schema',)
+    serialize_rules = ('-user_schemas', )
 
     #ignore header for now
     def export(self):
@@ -33,7 +33,7 @@ class Schema(db.Model, SerializerMixin):
                     relationships += f"'{r.from_many.table.name.capitalize()}', back_populates='{r.to_one.table.name.lower()}s')\n"
 
                 
-                table_string += f'\t{column.name.lower()} = db.Column(db.{column.column_type_string}'
+                table_string += f'\t{column.name.lower()} = db.Column(db.{column.column_type}'
                 if column.is_pk:
                     table_string += ', primary_key=True'
                 if fkey != '':

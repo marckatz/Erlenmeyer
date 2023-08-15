@@ -28,28 +28,28 @@ if __name__ == '__main__':
 
         id = Column(
             name='id',
-            column_type=0,
+            column_type='Integer',
             is_pk=True,
             in_repr=True,
             table_id=page_table.id
         )
         title = Column(
             name='title',
-            column_type=1,
+            column_type='String',
             is_pk=False,
             in_repr=True,
             table_id=page_table.id
         )
         text = Column(
             name='text',
-            column_type=1,
+            column_type='String',
             is_pk=False,
             in_repr=False,
             table_id=page_table.id
         )
         author = Column(
             name='author',
-            column_type=1,
+            column_type='String',
             is_pk=False,
             in_repr=False,
             table_id=page_table.id
@@ -63,21 +63,21 @@ if __name__ == '__main__':
 
         edit_table_id = Column(
             name='id',
-            column_type=0,
+            column_type='Integer',
             is_pk=True,
             in_repr=True,
             table_id=edit_table.id
         )
         diff = Column(
             name='diff',
-            column_type=1,
+            column_type='String',
             is_pk=False,
             in_repr=False,
             table_id=edit_table.id
         )
         page_id = Column(
             name='page_id',
-            column_type=0,
+            column_type='Integer',
             table_id=edit_table.id
         )
 

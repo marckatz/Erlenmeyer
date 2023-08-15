@@ -1,11 +1,13 @@
 import React from "react";
 
 function ColumnCard({column}) {
-
+    const {id, name, column_type, is_pk} = column
 
     return (
-        <div>
-            Column
+        <div className="row">
+            <div className="col">Column</div>
+            <div className="col">{name}</div>
+            <div className="col">{column_type}</div>
         </div>
     )
 }

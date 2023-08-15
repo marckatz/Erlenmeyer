@@ -1,16 +1,39 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import ColumnCard from "./ColumnCard";
+import NewColumn from "./NewColumn";
 
-function TableCard({tableId}) {
+function TableCard({table}) {
+    const {id, name} = table
+    const [columns, setColumns] = useState(table.columns)
 
-    useEffect(() => {
-        fetch(`http://localhost:5555/tables/${tableId}`)
-        .then(r=>r.json())
-        .then(table => console.log(table))
-    },[])
+    function handleSubmit(e,colName,colType){
+        e.preventDefault()
+        const new_column = {
+            name: colName,
+            column_type:colType,
+            is_pk:false,
+            in_repr:false,
+            table_id:id
+        }
+        // console.log(new_column)
+        fetch('http://localhost:5555/columns', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(new_column)
+        })
+        .then(r => r.json())
+        .then(data => setColumns(c => [...c, data]))
+    }
+
+    const create_rows = columns.map(col => {
+            return <ColumnCard key={col.id} column={col}/>
+        });
 
     return (
-        <div>
-            Table
+        <div className="container">
+            <h2 className="row">Table: {name}</h2>
+            {create_rows}
+            <NewColumn handleSubmit={handleSubmit}/>
         </div>
     )
 }
