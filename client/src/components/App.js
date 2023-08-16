@@ -7,6 +7,7 @@ import SchemaFrame from './SchemaFrame';
 import Navbar from './Navbar';
 import Login from './Login';
 import Home from './Home';
+import Signup from './Signup';
 
 function App() {
   const [user, setUser] = useState(null)
@@ -28,6 +29,7 @@ function App() {
             <Route exact path='/' component={Home} />
             {user && <Route path='/schema' component={SchemaFrame} />}
             <Route path='/login' component={Login}/>
+            <Route path='/signup' component={Signup} />
           </Switch>
         </div>
       </UserContext.Provider>
