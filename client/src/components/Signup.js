@@ -51,7 +51,7 @@ function Signup() {
                     <h2 className="text-center">Sign Up</h2>
                     <form onSubmit={formik.handleSubmit}>
                         <div className="mb-1">
-                            <label htmlFor='username' className='form-label'>Username:</label>
+                            <label className='form-label' htmlFor='username'>Username:</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -68,7 +68,7 @@ function Signup() {
                             {usernameError && <p className='text-danger'>{usernameError}</p>}
                         </div>
                         <div className="mb-1">
-                            <label className='form-label'>Password:</label>
+                            <label className='form-label' htmlFor='password'>Password:</label>
                             <input
                                 type="password"
                                 className="form-control"

@@ -6,6 +6,7 @@ import Login from './Login';
 import Home from './Home';
 import Signup from './Signup';
 import { UserContext } from "../context/user";
+import NotFound from "./NotFound";
 
 function RouteWrapper(){
     const {user, setUser} = useContext(UserContext)
@@ -25,8 +26,9 @@ function RouteWrapper(){
             <Switch>
                 <Route exact path='/' component={Home} />
                 {user && <Route path='/schema' component={SchemaFrame} />}
-                <Route path='/login' component={Login}/>
-                <Route path='/signup' component={Signup} />
+                {!user && <Route path='/login' component={Login}/>}
+                {!user && <Route path='/signup' component={Signup} />}
+                <Route path='*' component={NotFound} />
             </Switch>
             </div>
         </Router>

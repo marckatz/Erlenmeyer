@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ColumnCard from "./ColumnCard";
 import NewColumn from "./NewColumn";
 
