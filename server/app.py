@@ -3,6 +3,7 @@
 # Remote library imports
 from flask import request, make_response, session
 from flask_restful import Resource
+from sqlalchemy.exc import IntegrityError
 
 # Local imports
 from config import app, db, api
@@ -17,6 +18,20 @@ def index():
 class Users(Resource):
     def get(self):
         return make_response([u.to_dict(only=('id','username','schemas.id', 'schemas.name')) for u in User.query.all()])
+    
+    def post(self):
+        data = request.get_json()
+        new_user = User(
+            username=data['username'],
+            password_hash=data['password']
+        )
+        try:
+            db.session.add(new_user)
+            db.session.commit()
+            session['user_id'] = new_user.id
+            return make_response(new_user.to_dict(), 201)
+        except IntegrityError as e:
+            return make_response({'error':f'Username already exists'}, 400)
 
 api.add_resource(Users, '/users')
 

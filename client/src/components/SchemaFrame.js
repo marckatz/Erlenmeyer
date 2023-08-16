@@ -4,7 +4,7 @@ import { UserContext } from "../context/user";
 import NewTable from "./NewTable";
 
 function SchemaFrame(){
-    const {user, setUser} = useContext(UserContext)
+    const {user} = useContext(UserContext)
     const [currentId, setCurrentId] = useState(0)
     const [schema, setSchema] = useState(null)
     const [reset, setReset] = useState(false)
@@ -13,10 +13,9 @@ function SchemaFrame(){
         if(currentId !== 0){
             fetch(`/schemas/${currentId}`)
             .then(r => {
-                return r.ok ? r.json() : {}
-            })
-            .then(s => {
-                setSchema(s)
+                if(r.ok){
+                    r.json().then(s=>setSchema(s))
+                }
             })
         }
     },[currentId, reset])
@@ -65,12 +64,17 @@ function SchemaFrame(){
                 <select className="col form-select" id="schema" onChange={e=>setCurrentId(e.target.value)} value={currentId}>
                     <option value={0} disabled>Select Schema</option>
                     {user.schemas.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+                    <option value={0}>Add Schema</option>
                 </select>
             </form>
-            <h1>{schema && schema.name}</h1>
-            {schema && <div className="btn btn-outline-primary" onClick={handleExport}>Export</div>}
-            {table_list}
-            {schema && <NewTable handleNewTableSubmit={handleNewTableSubmit}/>}
+            {schema?(
+                <>
+                    <h1>{schema.name}</h1>
+                    <div className="btn btn-outline-primary" onClick={handleExport}>Export</div>
+                    {table_list}
+                    <NewTable handleNewTableSubmit={handleNewTableSubmit}/>
+                </>
+            ) : null}
         </div>
     )
 }
