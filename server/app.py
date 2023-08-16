@@ -90,6 +90,14 @@ def check_session ():
     else:
         return make_response({'error': 'User not in session'}, 401)
 
+@app.route('/schema/<int:id>/export')
+def export_schema(id):
+    schema = Schema.query.filter_by(id=id).first()
+    if schema:
+        return make_response({'model':schema.export()}, 200)
+    else:
+        make_response({'error':'Schema not found'}, 404)
+
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

@@ -6,7 +6,7 @@ function TableCard({table}) {
     const {id, name} = table
     const [columns, setColumns] = useState(table.columns)
 
-    function handleSubmit(e,colName,colType){
+    function handleSubmit(e,colName,colType,setColName){
         e.preventDefault()
         const new_column = {
             name: colName,
@@ -22,7 +22,10 @@ function TableCard({table}) {
             body: JSON.stringify(new_column)
         })
         .then(r => r.json())
-        .then(data => setColumns(c => [...c, data]))
+        .then(data => {
+            setColName('')
+            setColumns(c => [...c, data])
+        })
     }
 
     const create_rows = columns.map(col => {

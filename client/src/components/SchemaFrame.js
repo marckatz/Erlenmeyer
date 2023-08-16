@@ -44,6 +44,21 @@ function SchemaFrame(){
         })
     }
 
+    function handleExport(){
+        fetch(`/schema/${schema.id}/export`)
+        .then(r=>r.json())
+        .then(data=>{
+            const exportString = data['model']
+            const exportBlob = new Blob([exportString], {type:'text/plain'})
+            const temp_anchor = document.createElement("a");
+            temp_anchor.href = URL.createObjectURL(exportBlob);
+            temp_anchor.download = 'models.py' 
+            document.body.appendChild(temp_anchor)
+            temp_anchor.click()
+            temp_anchor.remove()
+        })
+    }
+
     return (
         <div>
             <form className="d-flex" onSubmit={e=>e.preventDefault()}>
@@ -53,6 +68,7 @@ function SchemaFrame(){
                 </select>
             </form>
             <h1>{schema && schema.name}</h1>
+            {schema && <div className="btn btn-outline-primary" onClick={handleExport}>Export</div>}
             {table_list}
             {schema && <NewTable handleNewTableSubmit={handleNewTableSubmit}/>}
         </div>

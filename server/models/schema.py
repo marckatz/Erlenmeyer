@@ -26,7 +26,7 @@ class Schema(db.Model, SerializerMixin):
                 fkey = ''
                 for r in column.from_many_relationships:
                     relationships += f'\t{r.to_one.table.name.lower()}s = db.relationship('
-                    relationships += f"'{r.to_one.table.name.capitalize()}', back_populates='{r.from_many.table.name.lower()}', cascade='add,delete-orphan')\n"
+                    relationships += f"'{r.to_one.table.name.capitalize()}', back_populates='{r.from_many.table.name.lower()}', cascade='all,delete-orphan')\n"
                 for r in column.to_one_relationships:
                     fkey = f'{r.from_many.table.name.lower()}s.{r.from_many.name}'
                     relationships += f'\t{r.from_many.table.name.lower()} = db.relationship('
