@@ -35,6 +35,16 @@ class Users(Resource):
 
 api.add_resource(Users, '/users')
 
+class Schemas(Resource):
+    def post(self):
+        data = request.get_json()
+        new_schema = Schema(name=data['name'])
+        db.session.add(new_schema)
+        db.session.commit()
+        return make_response(new_schema.to_dict(), 201)
+
+api.add_resource(Schemas, '/schemas')
+
 class SchemasById(Resource):
     def get(self, id):
         schema = Schema.query.filter_by(id=id).first()
@@ -44,6 +54,16 @@ class SchemasById(Resource):
             return make_response({'error':'Schema not found'}, 404)
 
 api.add_resource(SchemasById, '/schemas/<int:id>')
+
+class UserSchemas(Resource):
+    def post(self):
+        data = request.get_json()
+        new_us = UserSchema(user_id=data['user_id'], schema_id=data['schema_id'])
+        db.session.add(new_us)
+        db.session.commit()
+        return make_response(new_us.to_dict(), 201)
+
+api.add_resource(UserSchemas, '/userschemas')
 
 class Tables(Resource):
     def post(self):
