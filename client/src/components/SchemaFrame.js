@@ -4,7 +4,7 @@ import { UserContext } from "../context/user";
 import NewTable from "./NewTable";
 
 function SchemaFrame(){
-    const {user, setUser} = useContext(UserContext)
+    const {user} = useContext(UserContext)
     const [currentId, setCurrentId] = useState(0)
     const [schema, setSchema] = useState(null)
     const [reset, setReset] = useState(false)

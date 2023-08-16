@@ -16,13 +16,13 @@ function Navbar() {
     return (
         <nav className="navbar navbar-expand-lg">
             <div className="container-fluid">
-            {user ? (
-                <>
-                    <div className="col btn" onClick={handleLogout}>Log Out</div>
-                </>
-            ) : (
-                <Link to='/login' className="btn">Log In</Link>
-            )}
+                {user ? (
+                    <>
+                        <div className="col btn" onClick={handleLogout}>Log Out</div>
+                    </>
+                ) : (
+                    <Link to='/login' className="btn">Log In</Link>
+                )}
             </div>
         </nav>
     )
