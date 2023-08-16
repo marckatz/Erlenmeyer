@@ -1,13 +1,16 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { UserContext } from '../context/user';
+import { useHistory } from 'react-router-dom';
 
 function Signup() {
     const {user, setUser} = useContext(UserContext)
+    const history = useHistory()
+    const [usernameError, setUsernameError] = useState('')
 
     const formSchema = yup.object().shape({
-        username: yup.string().required("Must enter a name").min(5).max(25),
+        username: yup.string().required("Must enter a name").min(2).max(25),
         password: yup.string().required("Must enter a password").min(6).max(15),
     });
 
@@ -24,15 +27,22 @@ function Signup() {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(values, null, 2),
-            }).then((res) => {
-                if (res.ok) {
-                    res.json().then(data => {
-                        setUser(data);
-                    });
+            })
+            .then(r => {
+                if(r.ok){
+                    r.json().then(data => {
+                        setUser(data)
+                        history.push('/')
+                    })
                 }
-            });
-        },
+                else{
+                    setUsernameError('Username already exists')
+                }
+            })
+        }
     });
+
+
 
     return (
         <div className="container mt-5">
@@ -46,12 +56,16 @@ function Signup() {
                                 type="text"
                                 className="form-control"
                                 value={formik.values.username}
-                                onChange={formik.handleChange}
+                                onChange={e=>{
+                                    formik.handleChange(e)
+                                    setUsernameError('')
+                                }}
                                 name='username'
                                 id='username'
                                 required
                             />
                             <p className='text-danger'>{formik.errors.username}</p>
+                            {usernameError && <p className='text-danger'>{usernameError}</p>}
                         </div>
                         <div className="mb-1">
                             <label className='form-label'>Password:</label>
