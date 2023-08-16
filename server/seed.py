@@ -78,6 +78,8 @@ if __name__ == '__main__':
         page_id = Column(
             name='page_id',
             column_type='Integer',
+            is_pk=False,
+            in_repr=False,
             table_id=edit_table.id
         )
 

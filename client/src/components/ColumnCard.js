@@ -5,9 +5,9 @@ function ColumnCard({column}) {
 
     return (
         <div className="row">
-            <div className="col">Column</div>
             <div className="col">{name}</div>
             <div className="col">{column_type}</div>
+            <div className="col"></div>
         </div>
     )
 }

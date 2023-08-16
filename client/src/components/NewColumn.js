@@ -4,8 +4,8 @@ function NewColumn({handleSubmit}){
     const [colName, setColName] = useState('')
     const [colType, setColType] = useState('Integer')
 
-        return (
-        <form className="row align-items-center" onSubmit={e=>handleSubmit(e,colName,colType)}>
+    return (
+        <form className="row align-items-center" onSubmit={e=>handleSubmit(e,colName,colType,setColName)}>
             <div className="col">
                 <label className="visually-hidden" htmlFor='col_name'>name</label>
                 <div className="input-group">
@@ -13,7 +13,8 @@ function NewColumn({handleSubmit}){
                         type="text" 
                         className="form-control" 
                         id="col_name" 
-                        placeholder="Column Name" 
+                        placeholder="Column Name"
+                        value={colName}
                         onChange={e => setColName(e.target.value)}
                     />
                 </div>

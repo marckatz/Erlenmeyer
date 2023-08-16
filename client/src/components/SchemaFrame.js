@@ -55,6 +55,7 @@ function SchemaFrame(){
             temp_anchor.download = 'models.py' 
             document.body.appendChild(temp_anchor)
             temp_anchor.click()
+            temp_anchor.remove()
         })
     }
 
