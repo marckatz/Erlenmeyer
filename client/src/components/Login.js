@@ -1,14 +1,20 @@
 import React, { useContext, useState } from "react";
-import { useHistory } from "react-router-dom";
 import { UserContext } from "../context/user";
+import Modal from 'react-bootstrap/Modal'
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
 
 function Login() {
-    const {user, setUser} = useContext(UserContext)
+    const { setUser } = useContext(UserContext)
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const history = useHistory()
+    const [show, setShow] = useState(false);
 
-    function handleLogin() {
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    function handleLogin(e) {
+        e.preventDefault()
         try {
             fetch('/login', {
                 method: 'POST',
@@ -18,11 +24,12 @@ function Login() {
                 .then(r => {
                     if (r.status === 200) {
                         return r.json()
+                            .then(logged_in_user => {
+                                setUser(logged_in_user)
+                                handleClose()
+                                // const loginModal = new bootstrap.Modal('#loginModal').hide()
+                            })
                     }
-                })
-                .then(logged_in_user => {
-                    setUser(logged_in_user)
-                    history.push('/')
                 })
         }
         catch (error) {
@@ -31,33 +38,49 @@ function Login() {
     }
 
     return (
-        <form onSubmit={(e) => e.preventDefault()}>
-            <div>
-                <label className='form-label'>Username:</label>
-                <input
-                    type="text"
-                    className="form-control"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                />
-            </div>
-            <div>
-                <label className='form-label'>Password:</label>
-                <input
-                    type="password"
-                    className="form-control"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
-            </div>
-            <div className="text-center">
-                <button className="btn" onClick={handleLogin}>
-                    Log In
-                </button>
-            </div>
-        </form>
+        <>
+            <Button variant='outline-success' onClick={handleShow}>
+                Log In
+            </Button>
+            <Modal
+                show={show}
+                onHide={handleClose}
+                backdrop="static"
+                keyboard="false"
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>Log In</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form id='loginForm' onSubmit={handleLogin}>
+                    <Form.Group className="mb-3" controlId="formUsername">
+                            <Form.Label>Username</Form.Label>
+                            <Form.Control 
+                                type="text" 
+                                placeholder="Username" 
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                required/>
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formPassword">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control 
+                                type="password" 
+                                placeholder="Password" 
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required/>
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="outline-secondary" onClick={handleClose}>
+                        Close
+                    </Button>
+                    <Button variant="outline-success" type="submit" form="loginForm">Log In</Button>
+                </Modal.Footer>
+            </Modal>
+        </>
     )
 }
 

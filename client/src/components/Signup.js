@@ -3,11 +3,18 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { UserContext } from '../context/user';
 import { useHistory } from 'react-router-dom';
+import Modal from 'react-bootstrap/Modal'
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
 
 function Signup() {
-    const {user, setUser} = useContext(UserContext)
+    const {setUser} = useContext(UserContext)
     const history = useHistory()
     const [usernameError, setUsernameError] = useState('')
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     const formSchema = yup.object().shape({
         username: yup.string().required("Must enter a name").min(2).max(25),
@@ -45,50 +52,58 @@ function Signup() {
 
 
     return (
-        <div className="container mt-5">
-            <div className="row justify-content-center">
-                <div className="col-md-4">
-                    <h2 className="text-center">Sign Up</h2>
-                    <form onSubmit={formik.handleSubmit}>
-                        <div className="mb-1">
-                            <label className='form-label' htmlFor='username'>Username:</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                value={formik.values.username}
-                                onChange={e=>{
-                                    formik.handleChange(e)
-                                    setUsernameError('')
-                                }}
-                                name='username'
-                                id='username'
-                                required
-                            />
-                            <p className='text-danger'>{formik.errors.username}</p>
-                            {usernameError && <p className='text-danger'>{usernameError}</p>}
-                        </div>
-                        <div className="mb-1">
-                            <label className='form-label' htmlFor='password'>Password:</label>
-                            <input
-                                type="password"
-                                className="form-control"
-                                value={formik.values.password}
-                                name='password'
-                                id='password'
-                                onChange={formik.handleChange}
-                                required
-                            />
-                            <p className='text-danger'>{formik.errors.password}</p>
-                        </div>
-                        <div className="text-center">
-                            <button className="btn btn-warning" type="submit">
-                                Sign Up
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+        <>
+            <Button variant='outline-warning' onClick={handleShow}>
+                Sign Up
+            </Button>
+            <Modal
+                show={show}
+                onHide={handleClose}
+                backdrop="static"
+                keyboard="false">
+                    <Modal.Header closeButton>
+                        <Modal.Title>Sign In</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Form id='signupForm' onSubmit={formik.handleSubmit}>
+                            <Form.Group className='mb-3' controlId='formUsername'>
+                                <Form.Label>Username</Form.Label>
+                                <Form.Control
+                                    type='text'
+                                    placeholder='Username'
+                                    value={formik.values.username}
+                                    name='username'
+                                    onChange={e=>{
+                                        formik.handleChange(e)
+                                        setUsernameError('')
+                                    }}
+                                    required />
+                                    <p className='text-danger'>{formik.errors.username}</p>
+                                    {usernameError && <p className='text-danger'>{usernameError}</p>}
+                            </Form.Group>
+                            <Form.Group className='mb-3' controlId='formPassword'>
+                                <Form.Label>Password</Form.Label>
+                                <Form.Control
+                                    type='password'
+                                    placeholder='Password'
+                                    value={formik.values.password}
+                                    name='password'
+                                    onChange={e=>{
+                                        formik.handleChange(e)
+                                    }}
+                                    required />
+                                    <p className='text-danger'>{formik.errors.password}</p>
+                            </Form.Group>
+                        </Form>
+                    </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="outline-secondary" onClick={handleClose}>
+                        Close
+                    </Button>
+                    <Button variant="outline-success" type="submit" form="signupForm">Sign Up</Button>
+                </Modal.Footer>
+            </Modal>
+        </>
     );
 }
 
