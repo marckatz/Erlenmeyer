@@ -27,7 +27,6 @@ function Login() {
                             .then(logged_in_user => {
                                 setUser(logged_in_user)
                                 handleClose()
-                                // const loginModal = new bootstrap.Modal('#loginModal').hide()
                             })
                     }
                 })
@@ -39,7 +38,7 @@ function Login() {
 
     return (
         <>
-            <Button variant='outline-success' onClick={handleShow}>
+            <Button variant='outline-success' onClick={handleShow} className="me-2">
                 Log In
             </Button>
             <Modal
@@ -53,23 +52,23 @@ function Login() {
                 </Modal.Header>
                 <Modal.Body>
                     <Form id='loginForm' onSubmit={handleLogin}>
-                    <Form.Group className="mb-3" controlId="formUsername">
+                        <Form.Group className="mb-3" controlId="formUsername">
                             <Form.Label>Username</Form.Label>
-                            <Form.Control 
-                                type="text" 
-                                placeholder="Username" 
+                            <Form.Control
+                                type="text"
+                                placeholder="Username"
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
-                                required/>
+                                required />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formPassword">
                             <Form.Label>Password</Form.Label>
-                            <Form.Control 
-                                type="password" 
-                                placeholder="Password" 
+                            <Form.Control
+                                type="password"
+                                placeholder="Password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                required/>
+                                required />
                         </Form.Group>
                     </Form>
                 </Modal.Body>
