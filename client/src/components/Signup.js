@@ -16,9 +16,13 @@ function Signup() {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    const usernameMin = 2
+    const usernameMax = 25
+    const passwordMin = 6
+    const passwordMax = 15
     const formSchema = yup.object().shape({
-        username: yup.string().required("Must enter a name").min(2).max(25),
-        password: yup.string().required("Must enter a password").min(6).max(15),
+        username: yup.string().required("Must enter a name").min(usernameMin,`Username must have at least ${usernameMin} characters`).max(usernameMax,`Username must have at most ${usernameMax} characters`),
+        password: yup.string().required("Must enter a password").min(passwordMin,`Password must have at least ${passwordMin} characters`).max(passwordMax,`Password must have at most ${passwordMax} characters`),
     });
 
     const formik = useFormik({
@@ -65,7 +69,7 @@ function Signup() {
                     <Modal.Title>Sign In</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form id='signupForm' onSubmit={formik.handleSubmit}>
+                    <Form id='signupForm' noValidate onSubmit={formik.handleSubmit}>
                         <Form.Group className='mb-3' controlId='formUsername'>
                             <Form.Label>Username</Form.Label>
                             <Form.Control
@@ -77,9 +81,12 @@ function Signup() {
                                     formik.handleChange(e)
                                     setUsernameError('')
                                 }}
+                                isInvalid={!!formik.errors.username || usernameError}
+                                isValid={!formik.errors.username && formik.values.username}
                                 required />
-                            <p className='text-danger'>{formik.errors.username}</p>
-                            {usernameError && <p className='text-danger'>{usernameError}</p>}
+                            <Form.Control.Feedback type="invalid">
+                                {usernameError?usernameError:formik.errors.username}
+                            </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group className='mb-3' controlId='formPassword'>
                             <Form.Label>Password</Form.Label>
@@ -91,8 +98,12 @@ function Signup() {
                                 onChange={e => {
                                     formik.handleChange(e)
                                 }}
+                                isInvalid={!!formik.errors.password}
+                                isValid={!formik.errors.password && formik.values.password}
                                 required />
-                            <p className='text-danger'>{formik.errors.password}</p>
+                            <Form.Control.Feedback type='invalid'>
+                                {formik.errors.password}
+                            </Form.Control.Feedback>
                         </Form.Group>
                     </Form>
                 </Modal.Body>

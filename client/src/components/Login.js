@@ -9,6 +9,8 @@ function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [show, setShow] = useState(false);
+    const [usernameError, setUsernameError] = useState('')
+    const [passwordError, setPasswordError] = useState('')
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -28,6 +30,13 @@ function Login() {
                                 setUser(logged_in_user)
                                 handleClose()
                             })
+                    }
+                    else if (r.status === 404) {
+                        setUsernameError('Invalid username')
+                    }
+                    else if (r.status === 401) {
+                        setUsernameError('Incorrect password')
+                        setPassword('')
                     }
                 })
         }
@@ -51,15 +60,22 @@ function Login() {
                     <Modal.Title>Log In</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form id='loginForm' onSubmit={handleLogin}>
+                    <Form id='loginForm' noValidate onSubmit={handleLogin}>
                         <Form.Group className="mb-3" controlId="formUsername">
                             <Form.Label>Username</Form.Label>
                             <Form.Control
                                 type="text"
                                 placeholder="Username"
                                 value={username}
-                                onChange={(e) => setUsername(e.target.value)}
+                                onChange={(e) => {
+                                    setUsername(e.target.value)
+                                    setUsernameError('')
+                                }}
+                                isInvalid={!!usernameError}
                                 required />
+                            <Form.Control.Feedback type="invalid">
+                                {usernameError}
+                            </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formPassword">
                             <Form.Label>Password</Form.Label>
@@ -67,8 +83,15 @@ function Login() {
                                 type="password"
                                 placeholder="Password"
                                 value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                onChange={(e) => {
+                                    setPassword(e.target.value)
+                                    setPasswordError('')
+                                }}
+                                isInvalid={!!passwordError}
                                 required />
+                            <Form.Control.Feedback type="invalid">
+                                {passwordError}
+                            </Form.Control.Feedback>
                         </Form.Group>
                     </Form>
                 </Modal.Body>
