@@ -15,7 +15,6 @@ function TableCard({table}) {
             in_repr:false,
             table_id:id
         }
-        // console.log(new_column)
         fetch('/columns', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},

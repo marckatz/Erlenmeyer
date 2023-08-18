@@ -8,10 +8,15 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel'
 
 function NewSchema({ forceReset, setCurrentId, setShowNewSchemaForm }) {
     const [newSchemaName, setNewSchemaName] = useState('')
+    const [isNotValid, setIsNotValid] = useState(false)
     const { user } = useContext(UserContext)
 
     function handleNewSchema(e) {
         e.preventDefault()
+        if(!newSchemaName){
+            setIsNotValid(true)
+            return null
+        }
         let newSchema = {
             name: newSchemaName
         }
@@ -42,7 +47,7 @@ function NewSchema({ forceReset, setCurrentId, setShowNewSchemaForm }) {
     }
 
     return (
-        <Form className="mt-3" onSubmit={handleNewSchema}>
+        <Form className="mt-3" noValidate onSubmit={handleNewSchema}>
             <Form.Group as={Row} className="align-items-center position-relative" controlId="formSchemaName">
                 <Col sm='10'>
                     <Row>
@@ -53,9 +58,11 @@ function NewSchema({ forceReset, setCurrentId, setShowNewSchemaForm }) {
                                     type="text"
                                     placeholder="Schema Name"
                                     value={newSchemaName}
-                                    onChange={e => setNewSchemaName(e.target.value)}
-                                    isValid={!!newSchemaName}
-                                    required />
+                                    onChange={e => {{
+                                        setNewSchemaName(e.target.value)
+                                        setIsNotValid(false)
+                                    }}}
+                                    isInvalid={isNotValid} />
                                     <Form.Control.Feedback type="invalid" tooltip>
                                         Must enter a name for the schema
                                     </Form.Control.Feedback>

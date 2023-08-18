@@ -39,24 +39,7 @@ function SchemaFrame() {
         setReset(!reset)
     }
 
-    function handleNewTableSubmit(e, newTableName, setNewTableName) {
-        e.preventDefault()
-        const newTable = {
-            name: newTableName,
-            schema_id: currentId
-        }
-        fetch('/tables', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(newTable)
-        })
-            .then(r => r.json())
-            .then(t => {
-                setSchema(s => { return { 'name': s.name, 'tables': [...s.tables, t] } })
-                setNewTableName('')
-                forceReset()
-            })
-    }
+
 
     function handleExport() {
         fetch(`/schema/${schema.id}/export`)
@@ -84,7 +67,7 @@ function SchemaFrame() {
                 <Col sm='10'>
                     <Form onSubmit={e => e.preventDefault()}>
                         <Form.Group as={Row} >
-                            <Form.Label column sm="2">Select Schema:</Form.Label>
+                            <Form.Label column sm="2" className="text-end">Select Schema:</Form.Label>
                             <Col sm='10'>
                                 <Form.Select id="schema" onChange={handleSchemaChange} value={currentId}>
                                     {schemaList}
@@ -110,9 +93,9 @@ function SchemaFrame() {
             {schema ? (
                 <>
                     <h1>{schema.name}</h1>
-                    <div className="btn btn-outline-primary" onClick={handleExport}>Export</div>
+                    <Button variant="outline-primary" onClick={handleExport}>Export</Button>
                     {table_list}
-                    <NewTable handleNewTableSubmit={handleNewTableSubmit} />
+                    <NewTable currentId={currentId} forceReset={forceReset} />
                 </>
             ) : null}
         </div>
