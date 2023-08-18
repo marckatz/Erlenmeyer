@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
@@ -7,8 +7,9 @@ import * as yup from 'yup'
 import { useFormik } from "formik";
 
 function NewTable({ currentId, forceReset }) {
+
     const formSchema = yup.object().shape({
-        name: yup.string().required("Must enter a name").max(30,'Table name must have at most 30 characters').matches(/^[A-Za-z][\w$#]*$/,'Invalid table name'),
+        name: yup.string().required("Must enter a table name").max(30, 'Table name must have at most 30 characters').matches(/^[A-Za-z][\w]*$/, 'Invalid table name'),
     });
 
     const formik = useFormik({
@@ -26,10 +27,10 @@ function NewTable({ currentId, forceReset }) {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newTable)
             })
-            .then(r => r.json())
-            .then(t => {
-                forceReset()
-            })
+                .then(r => r.json())
+                .then(t => {
+                    forceReset()
+                })
         }
     })
 
@@ -44,11 +45,11 @@ function NewTable({ currentId, forceReset }) {
                             placeholder="Table Name"
                             name="name"
                             value={formik.values.name}
-                            onChange={e => {formik.handleChange(e)}}
+                            onChange={e => { formik.handleChange(e) }}
                             isInvalid={!!formik.errors.name} />
-                    <Form.Control.Feedback type="invalid" tooltip>
-                        {formik.errors.name}
-                    </Form.Control.Feedback>
+                        <Form.Control.Feedback type="invalid" tooltip>
+                            {formik.errors.name}
+                        </Form.Control.Feedback>
                     </Form.Group>
                 </Col>
                 <Col>
