@@ -31,9 +31,19 @@ class Users(Resource):
             session['user_id'] = new_user.id
             return make_response(new_user.to_dict(), 201)
         except IntegrityError as e:
-            return make_response({'error':f'Username already exists'}, 400)
+            return make_response({'error':'Username already exists'}, 400)
 
 api.add_resource(Users, '/users')
+
+class UsersById(Resource):
+    def get(self, id):
+        user = User.query.filter_by(id=id).first()
+        if not user:
+            return make_response({"error" : "User not found"}, 404)
+        else:
+            return make_response(user.to_dict(only=('id','username','schemas.id', 'schemas.name')), 200)
+
+api.add_resource(UsersById, '/users/<int:id>')
 
 class Schemas(Resource):
     def post(self):
@@ -97,6 +107,29 @@ class Columns(Resource):
         return make_response(new_column.to_dict(), 201)
 
 api.add_resource(Columns, '/columns')
+
+class ColumnsById(Resource):
+    def patch(self, id):
+        column = Column.query.filter_by(id=id).first()
+        data = request.get_json()
+        if not column:
+            return make_response({'error':'column not found'}, 404)
+        else:
+            for key in data:
+                setattr(column, key, data[key])
+            db.session.commit()
+            return make_response(column.to_dict(), 202)
+        
+    def delete(self, id):
+        column = Column.query.filter_by(id=id).first()
+        if not column:
+            return make_response({'error':'column not found'}, 404)
+        else:
+            db.session.delete(column)
+            db.session.commit()
+            return make_response({}, 204)
+
+api.add_resource(ColumnsById, '/columns/<int:id>')
 
 @app.route('/login', methods=['POST'])
 def login():
