@@ -69,10 +69,12 @@ class UserSchemas(Resource):
     def post(self):
         data = request.get_json()
         new_us = UserSchema(user_id=data['user_id'], schema_id=data['schema_id'])
-        db.session.add(new_us)
-        db.session.commit()
-        return make_response(new_us.to_dict(), 201)
-
+        try:
+            db.session.add(new_us)
+            db.session.commit()
+            return make_response(new_us.to_dict(), 201)
+        except IntegrityError as e:
+            return make_response({'error':'user_schema already exists'}, 400)
 api.add_resource(UserSchemas, '/userschemas')
 
 class Tables(Resource):
@@ -170,6 +172,14 @@ def export_schema(id):
 def schemasByUserid(id):
     schemas = [schema.to_dict() for schema in User.query.filter_by(id=id).first().schemas]
     return make_response(schemas, 200)
+
+@app.route('/users/<string:username>')
+def userByUsername(username):
+    user = User.query.filter_by(username=username).first()
+    if user:
+        return make_response(user.to_dict(only=('id','username','schemas.id', 'schemas.name')), 200)
+    else:
+        return make_response({'error':'User not found'}, 404)
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

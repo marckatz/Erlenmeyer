@@ -121,4 +121,7 @@ if __name__ == '__main__':
         db.session.add_all([ing_id, ing_name])
         db.session.commit()
 
+        user2 = User(username='tj', password_hash='123456')
+        db.session.add(user2)
+
         db.session.commit()
