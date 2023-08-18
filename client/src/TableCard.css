@@ -6,8 +6,12 @@
 
 .type-col{
     width: 35%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .button-col{
     width: 30%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

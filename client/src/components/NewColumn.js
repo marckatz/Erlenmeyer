@@ -42,33 +42,31 @@ function NewColumn({ tableId, setColumns }) {
     })
 
     return (
-        <Form className="gx-0" noValidate onSubmit={formik.handleSubmit}>
-            <Row>
-            <Col md='auto' >
-                <Form.Group controlId="formTable" className="position-relative">
-                    <Form.Control
-                        type="text"
-                        name='name'
-                        placeholder="Column Name"
-                        value={formik.values.name}
-                        onChange={e => { formik.handleChange(e) }}
-                        isInvalid={!!formik.errors.name}
-                        // className="mx-2"
-                        style={{ width: '13rem', margin: '0 0.5rem' }}
-                    />
-                    <Form.Control.Feedback type="invalid" tooltip style={{ marginLeft: '0.5rem' }}>
-                        {formik.errors.name}
-                    </Form.Control.Feedback>
-                </Form.Group>
-            </Col>
-            <Col md='auto'>
-                <Form.Select onChange={e => setColType(e.target.value)} value={colType} style={{ width: '9rem', margin: '0 .5rem' }}>
-                    {COLUMN_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
-                </Form.Select>
-            </Col>
-            <Col md='auto' style={{ width: '13rem', margin: '0 .5rem' }} className="justify-content-center d-flex">
-                <Button type="submit" variant="primary">Submit</Button>
-            </Col>
+        <Form noValidate onSubmit={formik.handleSubmit}>
+            <Row className="gx-0" >
+                <Col style={{flexGrow:'45'}}>
+                    <Form.Group controlId="formTable" className="position-relative">
+                        <Form.Control
+                            type="text"
+                            name='name'
+                            placeholder="Column Name"
+                            value={formik.values.name}
+                            onChange={e => { formik.handleChange(e) }}
+                            isInvalid={!!formik.errors.name}
+                        />
+                        <Form.Control.Feedback type="invalid" tooltip>
+                            {formik.errors.name}
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                </Col>
+                <Col style={{flexGrow:'35'}}>
+                    <Form.Select onChange={e => setColType(e.target.value)} value={colType} >
+                        {COLUMN_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+                    </Form.Select>
+                </Col>
+                <Col style={{flexGrow:'30'}} className="justify-content-center d-flex text-te">
+                    <Button type="submit" variant="primary">Submit</Button>
+                </Col>
             </Row>
         </Form>
     )

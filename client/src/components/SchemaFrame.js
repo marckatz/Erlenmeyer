@@ -92,7 +92,7 @@ function SchemaFrame() {
                 <>
                     <h1>{schema.name}</h1>
                     <Button variant="outline-primary" onClick={handleExport}>Export</Button>
-                    <Row md='3'>
+                    <Row md='3' className="gy-3">
                         {table_list}
                     </Row>
                     <NewTable currentId={currentId} forceReset={forceReset} />
