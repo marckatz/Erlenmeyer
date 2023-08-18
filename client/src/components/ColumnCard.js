@@ -5,9 +5,9 @@ function ColumnCard({column}) {
 
     return (
         <tr>
-            <td>{name}</td>
-            <td>{column_type}</td>
-            <td>placeholder</td>
+            <td className="name-col">{name}</td>
+            <td className="type-col">{column_type}</td>
+            <td className="button-col">TODO</td>
         </tr>
     )
 }

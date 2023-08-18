@@ -42,33 +42,33 @@ function NewColumn({ tableId, setColumns }) {
     })
 
     return (
-        <Form className="row align-items-center" noValidate onSubmit={formik.handleSubmit}>
+        <Form className="gx-0" noValidate onSubmit={formik.handleSubmit}>
             <Row>
-                <Col >
-                    <Form.Group controlId="formTable" className="position-relative">
-                        <Form.Control
-                            type="text"
-                            name='name'
-                            placeholder="Column Name"
-                            value={formik.values.name}
-                            onChange={e => { formik.handleChange(e) }}
-                            isInvalid={!!formik.errors.name}
-                            // className="mx-2"
-                            style={{width:'14rem'}}
-                        />
-                        <Form.Control.Feedback type="invalid" tooltip>
-                            {formik.errors.name}
-                        </Form.Control.Feedback>
-                    </Form.Group>
-                </Col>
-                <Col>
-                    <Form.Select onChange={e => setColType(e.target.value)} value={colType} style={{width:'10rem'}}>
-                        {COLUMN_TYPES.map(t => <option key={`'${t}'`} value={`'${t}'`}>{t}</option>)}
-                    </Form.Select>
-                </Col>
-                <Col>
-                    <Button type="submit" variant="primary">Submit</Button>
-                </Col>
+            <Col md='auto' >
+                <Form.Group controlId="formTable" className="position-relative">
+                    <Form.Control
+                        type="text"
+                        name='name'
+                        placeholder="Column Name"
+                        value={formik.values.name}
+                        onChange={e => { formik.handleChange(e) }}
+                        isInvalid={!!formik.errors.name}
+                        // className="mx-2"
+                        style={{ width: '13rem', margin: '0 0.5rem' }}
+                    />
+                    <Form.Control.Feedback type="invalid" tooltip style={{ marginLeft: '0.5rem' }}>
+                        {formik.errors.name}
+                    </Form.Control.Feedback>
+                </Form.Group>
+            </Col>
+            <Col md='auto'>
+                <Form.Select onChange={e => setColType(e.target.value)} value={colType} style={{ width: '9rem', margin: '0 .5rem' }}>
+                    {COLUMN_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+                </Form.Select>
+            </Col>
+            <Col md='auto' style={{ width: '13rem', margin: '0 .5rem' }} className="justify-content-center d-flex">
+                <Button type="submit" variant="primary">Submit</Button>
+            </Col>
             </Row>
         </Form>
     )

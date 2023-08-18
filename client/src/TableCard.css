@@ -1,0 +1,13 @@
+.name-col{
+    width: 45%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.type-col{
+    width: 35%;
+}
+
+.button-col{
+    width: 30%;
+}

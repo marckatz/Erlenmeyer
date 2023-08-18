@@ -36,7 +36,7 @@ function SchemaFrame() {
     })
 
     function forceReset() {
-        setReset(!reset)
+        setReset(r=>!r)
     }
 
     function handleExport() {
@@ -92,7 +92,9 @@ function SchemaFrame() {
                 <>
                     <h1>{schema.name}</h1>
                     <Button variant="outline-primary" onClick={handleExport}>Export</Button>
-                    {table_list}
+                    <Row md='3'>
+                        {table_list}
+                    </Row>
                     <NewTable currentId={currentId} forceReset={forceReset} />
                 </>
             ) : null}
