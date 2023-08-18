@@ -4,11 +4,14 @@ import NewColumn from "./NewColumn";
 import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-// import '../TableCard.css'
+import Button from "react-bootstrap/Button"
+import Collapse from 'react-bootstrap/Collapse';
+import '../TableCard.css'
 
 function TableCard({ table }) {
     const { id, name } = table
     const [columns, setColumns] = useState(table.columns)
+    const [show, setShow] = useState(false)
 
 
 
@@ -23,13 +26,24 @@ function TableCard({ table }) {
                     <Card.Title>
                         {name}
                     </Card.Title>
-                    <Row >
-                        <Col className="name-col">Name</Col>
-                        <Col className="type-col">Type</Col>
-                        <Col className="button-col">TODO</Col>
+                    <Row className="border mx-0">
+                        <Col className="table-col border" style={{flexBasis:'25%'}}>Name</Col>
+                        <Col className="table-col border" style={{flexBasis:'35%'}}>Type</Col>
+                        <Col className="table-col border" style={{flexBasis:'40%'}}>Edit</Col>
                     </Row>
                     {create_rows}
-                    <NewColumn setColumns={setColumns} tableId={id} />
+                    <Button 
+                        onClick={() => setShow(!show)}
+                        aria-controls="columnForm"
+                        aria-expanded={show}
+                        className="my-2">
+                        {show?'Close ':''}New Column
+                    </Button>
+                    <Collapse in={show}>
+                        <div id='columnForm'>
+                            <NewColumn setColumns={setColumns} tableId={id} />
+                        </div>
+                    </Collapse>
                 </Card.Body>
             </Card>
         </Col>

@@ -18,7 +18,7 @@ class Column(db.Model, SerializerMixin):
     from_many_relationships = db.relationship('Relationship', back_populates='from_many', foreign_keys='Relationship.from_many_id', cascade='all,delete-orphan')
     to_one_relationships = db.relationship('Relationship', back_populates='to_one', foreign_keys='Relationship.to_one_id', cascade='all,delete-orphan')
 
-    serialize_rules = ('-table.rows', '-from_many_relationships', '-to_one_relationships')
+    serialize_rules = ('-table.columns', '-from_many_relationships', '-to_one_relationships')
 
     def __repr__(self):
         return f'<Column {self.id} {self.name}>'

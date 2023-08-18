@@ -8,21 +8,22 @@ import { useFormik } from "formik";
 
 function NewColumn({ tableId, setColumns }) {
     const COLUMN_TYPES = ['Integer', 'String', 'Text', 'DateTime', 'Float', 'Boolean', 'PickleType', 'LargeBinary']
-    const [colType, setColType] = useState('Integer')
 
     const formSchema = yup.object().shape({
         name: yup.string().required("Must enter a column name").max(30, 'Column name must have at most 30 characters').matches(/^[A-Za-z][\w]*$/, 'Invalid column name'),
+        colType: yup.string().matches(/^(?:Integer|String|Text|DateTime|Float|Boolean|PickleType|LargeBinary)$/, "Must select a type")
     })
 
     const formik = useFormik({
         initialValues: {
-            name: ""
+            name: "",
+            colType: '0'
         },
         validationSchema: formSchema,
         onSubmit: (values) => {
             const new_column = {
                 name: values.name,
-                column_type: colType,
+                column_type: values.colType,
                 is_pk: false,
                 in_repr: false,
                 table_id: tableId
@@ -36,20 +37,20 @@ function NewColumn({ tableId, setColumns }) {
                 .then(data => {
                     setColumns(c => [...c, data])
                     values.name = ''
-                    setColType(COLUMN_TYPES[0])
+                    values.colType = '0'
                 })
         }
     })
 
     return (
         <Form noValidate onSubmit={formik.handleSubmit}>
-            <Row className="gx-0" >
-                <Col style={{flexGrow:'45'}}>
+            <Row className="gx-0">
+                <Col style={{ flexBasis: '25%' }}>
                     <Form.Group controlId="formTable" className="position-relative">
                         <Form.Control
                             type="text"
                             name='name'
-                            placeholder="Column Name"
+                            placeholder="Name"
                             value={formik.values.name}
                             onChange={e => { formik.handleChange(e) }}
                             isInvalid={!!formik.errors.name}
@@ -59,12 +60,18 @@ function NewColumn({ tableId, setColumns }) {
                         </Form.Control.Feedback>
                     </Form.Group>
                 </Col>
-                <Col style={{flexGrow:'35'}}>
-                    <Form.Select onChange={e => setColType(e.target.value)} value={colType} >
-                        {COLUMN_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
-                    </Form.Select>
+                <Col style={{ flexBasis: '35%' }}>
+                    <Form.Group controlId="formTableType" className="position-relative">
+                        <Form.Select onChange={e => formik.handleChange(e)} value={formik.values.colType} name='colType' isInvalid={!!formik.errors.colType}>
+                            <option disabled value={0}>Type</option>
+                            {COLUMN_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid" tooltip>
+                            {formik.errors.colType}
+                        </Form.Control.Feedback>
+                    </Form.Group>
                 </Col>
-                <Col style={{flexGrow:'30'}} className="justify-content-center d-flex text-te">
+                <Col style={{ flexBasis: '40%' }} className="justify-content-center d-flex text-te">
                     <Button type="submit" variant="primary">Submit</Button>
                 </Col>
             </Row>
