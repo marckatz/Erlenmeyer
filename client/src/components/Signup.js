@@ -66,11 +66,11 @@ function Signup() {
                 backdrop="static"
                 keyboard="false">
                 <Modal.Header closeButton>
-                    <Modal.Title>Sign In</Modal.Title>
+                    <Modal.Title>Sign Up</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form id='signupForm' noValidate onSubmit={formik.handleSubmit}>
-                        <Form.Group className='mb-3' controlId='formUsername'>
+                        <Form.Group className='mb-3 position-relative' controlId='formUsername'>
                             <Form.Label>Username</Form.Label>
                             <Form.Control
                                 type='text'
@@ -84,11 +84,11 @@ function Signup() {
                                 isInvalid={!!formik.errors.username || usernameError}
                                 isValid={!formik.errors.username && formik.values.username}
                                 required />
-                            <Form.Control.Feedback type="invalid">
+                            <Form.Control.Feedback type="invalid" tooltip>
                                 {usernameError?usernameError:formik.errors.username}
                             </Form.Control.Feedback>
                         </Form.Group>
-                        <Form.Group className='mb-3' controlId='formPassword'>
+                        <Form.Group className='mb-3 position-relative' controlId='formPassword'>
                             <Form.Label>Password</Form.Label>
                             <Form.Control
                                 type='password'
@@ -101,7 +101,7 @@ function Signup() {
                                 isInvalid={!!formik.errors.password}
                                 isValid={!formik.errors.password && formik.values.password}
                                 required />
-                            <Form.Control.Feedback type='invalid'>
+                            <Form.Control.Feedback type='invalid' tooltip>
                                 {formik.errors.password}
                             </Form.Control.Feedback>
                         </Form.Group>

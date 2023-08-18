@@ -29,7 +29,7 @@ function SchemaFrame() {
         fetch(`/schemasByUserid/${user.id}`)
             .then(r => r.json())
             .then(schemas => setSchemaList(schemas.map(s => <option key={s.id} value={s.id}>{s.name}</option>)))
-    }, [currentId, reset])
+    }, [currentId, reset, user.id])
 
     const table_list = schema && schema.tables.map(table => {
         return <TableCard key={table.id} table={table} />

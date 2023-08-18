@@ -1,4 +1,4 @@
-import React, { Suspense, useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import SchemaFrame from './SchemaFrame';
 import Navbar from './Navbar';
