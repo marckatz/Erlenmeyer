@@ -13,10 +13,19 @@ function TableCard({ table }) {
     const [columns, setColumns] = useState(table.columns)
     const [show, setShow] = useState(false)
 
+    function handleDelete(columnId){
+        fetch(`/columns/${columnId}`,{
+            method:"DELETE"
+        })
+        .then(r => {
+            if(r.ok){
+                setColumns(cs=>cs.filter(c => c.id !== columnId))
+            }
+        })
+    }
 
-
-    const create_rows = columns.map(col => {
-        return <ColumnCard key={col.id} column={col} />
+    const create_rows = columns.map((col) => {
+        return <ColumnCard key={col.id} column={col} handleDelete={handleDelete} />
     });
 
     return (
@@ -29,7 +38,7 @@ function TableCard({ table }) {
                     <Row className="border mx-0">
                         <Col className="table-col border" style={{flexBasis:'25%'}}>Name</Col>
                         <Col className="table-col border" style={{flexBasis:'35%'}}>Type</Col>
-                        <Col className="table-col border" style={{flexBasis:'40%'}}>Edit</Col>
+                        <Col className="table-col border" style={{flexBasis:'40%'}}></Col>
                     </Row>
                     {create_rows}
                     <Button 
