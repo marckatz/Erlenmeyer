@@ -35,7 +35,7 @@ function Login() {
                         setUsernameError('Invalid username')
                     }
                     else if (r.status === 401) {
-                        setUsernameError('Incorrect password')
+                        setPasswordError('Incorrect password')
                         setPassword('')
                     }
                 })
@@ -61,7 +61,7 @@ function Login() {
                 </Modal.Header>
                 <Modal.Body>
                     <Form id='loginForm' noValidate onSubmit={handleLogin}>
-                        <Form.Group className="mb-3" controlId="formUsername">
+                        <Form.Group className="mb-3 position-relative" controlId="formUsername">
                             <Form.Label>Username</Form.Label>
                             <Form.Control
                                 type="text"
@@ -73,11 +73,11 @@ function Login() {
                                 }}
                                 isInvalid={!!usernameError}
                                 required />
-                            <Form.Control.Feedback type="invalid">
+                            <Form.Control.Feedback type="invalid" tooltip>
                                 {usernameError}
                             </Form.Control.Feedback>
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="formPassword">
+                        <Form.Group className="mb-3 position-relative" controlId="formPassword">
                             <Form.Label>Password</Form.Label>
                             <Form.Control
                                 type="password"
@@ -89,7 +89,7 @@ function Login() {
                                 }}
                                 isInvalid={!!passwordError}
                                 required />
-                            <Form.Control.Feedback type="invalid">
+                            <Form.Control.Feedback type="invalid" tooltip>
                                 {passwordError}
                             </Form.Control.Feedback>
                         </Form.Group>

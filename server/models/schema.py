@@ -1,4 +1,5 @@
 from sqlalchemy_serializer import SerializerMixin
+from sqlalchemy.ext.associationproxy import association_proxy
 
 from config import db
 
@@ -10,6 +11,8 @@ class Schema(db.Model, SerializerMixin):
 
     user_schemas = db.relationship('UserSchema', back_populates='schema', cascade='all,delete-orphan')
     tables = db.relationship('Table', back_populates='schema', cascade='all,delete-orphan')
+
+    users = association_proxy('user_schemas', 'user')
 
     serialize_rules = ('-user_schemas', )
 
