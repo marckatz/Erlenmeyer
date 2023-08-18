@@ -1,43 +1,45 @@
 import React, { useState } from "react";
 import ColumnCard from "./ColumnCard";
 import NewColumn from "./NewColumn";
+import Table from 'react-bootstrap/Table'
+import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col'
+import Button from 'react-bootstrap/Button'
+import '../TableCard.css'
 
 function TableCard({table}) {
     const {id, name} = table
     const [columns, setColumns] = useState(table.columns)
 
-    function handleSubmit(e,colName,colType,setColName){
-        e.preventDefault()
-        const new_column = {
-            name: colName,
-            column_type:colType,
-            is_pk:false,
-            in_repr:false,
-            table_id:id
-        }
-        // console.log(new_column)
-        fetch('/columns', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(new_column)
-        })
-        .then(r => r.json())
-        .then(data => {
-            setColName('')
-            setColumns(c => [...c, data])
-        })
-    }
+
 
     const create_rows = columns.map(col => {
-            return <ColumnCard key={col.id} column={col}/>
-        });
+        return <ColumnCard key={col.id} column={col}/>
+    });
 
     return (
-        <div className="container">
-            <h2 className="row">Table: {name}</h2>
-            {create_rows}
-            <NewColumn handleSubmit={handleSubmit}/>
-        </div>
+        <Col>
+            <Card>
+                <Card.Body>
+                    <Card.Title>
+                        {name}
+                    </Card.Title>
+                    <Table bordered style={{width:'100%', tableLayout:'fixed', whiteSpace:'nowrap', }} >
+                        <thead>
+                            <tr>
+                                <th className="name-col">Name</th>
+                                <th className="type-col">Type</th>
+                                <th className="button-col">TODO</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {create_rows}
+                        </tbody>
+                    </Table>
+                    <NewColumn setColumns={setColumns} tableId={id}/>
+                </Card.Body>
+            </Card>
+        </Col>
     )
 }
 

@@ -8,7 +8,7 @@ import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 
 function Signup() {
-    const {setUser} = useContext(UserContext)
+    const { setUser } = useContext(UserContext)
     const history = useHistory()
     const [usernameError, setUsernameError] = useState('')
     const [show, setShow] = useState(false);
@@ -16,9 +16,13 @@ function Signup() {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    const usernameMin = 2
+    const usernameMax = 25
+    const passwordMin = 6
+    const passwordMax = 15
     const formSchema = yup.object().shape({
-        username: yup.string().required("Must enter a name").min(2).max(25),
-        password: yup.string().required("Must enter a password").min(6).max(15),
+        username: yup.string().required("Must enter a name").min(usernameMin,`Username must have at least ${usernameMin} characters`).max(usernameMax,`Username must have at most ${usernameMax} characters`),
+        password: yup.string().required("Must enter a password").min(passwordMin,`Password must have at least ${passwordMin} characters`).max(passwordMax,`Password must have at most ${passwordMax} characters`),
     });
 
     const formik = useFormik({
@@ -35,17 +39,17 @@ function Signup() {
                 },
                 body: JSON.stringify(values, null, 2),
             })
-            .then(r => {
-                if(r.ok){
-                    r.json().then(data => {
-                        setUser(data)
-                        history.push('/')
-                    })
-                }
-                else{
-                    setUsernameError('Username already exists')
-                }
-            })
+                .then(r => {
+                    if (r.ok) {
+                        r.json().then(data => {
+                            setUser(data)
+                            history.push('/')
+                        })
+                    }
+                    else {
+                        setUsernameError('Username already exists')
+                    }
+                })
         }
     });
 
@@ -53,7 +57,7 @@ function Signup() {
 
     return (
         <>
-            <Button variant='outline-warning' onClick={handleShow}>
+            <Button variant='outline-warning' onClick={handleShow} className='me-2'>
                 Sign Up
             </Button>
             <Modal
@@ -61,41 +65,48 @@ function Signup() {
                 onHide={handleClose}
                 backdrop="static"
                 keyboard="false">
-                    <Modal.Header closeButton>
-                        <Modal.Title>Sign In</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Form id='signupForm' onSubmit={formik.handleSubmit}>
-                            <Form.Group className='mb-3' controlId='formUsername'>
-                                <Form.Label>Username</Form.Label>
-                                <Form.Control
-                                    type='text'
-                                    placeholder='Username'
-                                    value={formik.values.username}
-                                    name='username'
-                                    onChange={e=>{
-                                        formik.handleChange(e)
-                                        setUsernameError('')
-                                    }}
-                                    required />
-                                    <p className='text-danger'>{formik.errors.username}</p>
-                                    {usernameError && <p className='text-danger'>{usernameError}</p>}
-                            </Form.Group>
-                            <Form.Group className='mb-3' controlId='formPassword'>
-                                <Form.Label>Password</Form.Label>
-                                <Form.Control
-                                    type='password'
-                                    placeholder='Password'
-                                    value={formik.values.password}
-                                    name='password'
-                                    onChange={e=>{
-                                        formik.handleChange(e)
-                                    }}
-                                    required />
-                                    <p className='text-danger'>{formik.errors.password}</p>
-                            </Form.Group>
-                        </Form>
-                    </Modal.Body>
+                <Modal.Header closeButton>
+                    <Modal.Title>Sign Up</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form id='signupForm' noValidate onSubmit={formik.handleSubmit}>
+                        <Form.Group className='mb-3 position-relative' controlId='formUsername'>
+                            <Form.Label>Username</Form.Label>
+                            <Form.Control
+                                type='text'
+                                placeholder='Username'
+                                value={formik.values.username}
+                                name='username'
+                                onChange={e => {
+                                    formik.handleChange(e)
+                                    setUsernameError('')
+                                }}
+                                isInvalid={!!formik.errors.username || usernameError}
+                                isValid={!formik.errors.username && formik.values.username}
+                                required />
+                            <Form.Control.Feedback type="invalid" tooltip>
+                                {usernameError?usernameError:formik.errors.username}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className='mb-3 position-relative' controlId='formPassword'>
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control
+                                type='password'
+                                placeholder='Password'
+                                value={formik.values.password}
+                                name='password'
+                                onChange={e => {
+                                    formik.handleChange(e)
+                                }}
+                                isInvalid={!!formik.errors.password}
+                                isValid={!formik.errors.password && formik.values.password}
+                                required />
+                            <Form.Control.Feedback type='invalid' tooltip>
+                                {formik.errors.password}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
                 <Modal.Footer>
                     <Button variant="outline-secondary" onClick={handleClose}>
                         Close

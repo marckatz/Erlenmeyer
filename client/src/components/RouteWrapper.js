@@ -21,16 +21,14 @@ function RouteWrapper(){
 
     return (
         <Router>
-            <div>
-            <Navbar />
-            <Switch>
-                <Route exact path='/' component={Home} />
-                {user && <Route path='/schema' component={SchemaFrame} />}
-                {!user && <Route path='/login' component={Login}/>}
-                {!user && <Route path='/signup' component={Signup} />}
-                <Route path='*' component={NotFound} />
-            </Switch>
-            </div>
+                <Navbar />
+                <Switch>
+                    <Route exact path='/' component={Home} />
+                    {user && <Route path='/schema' component={SchemaFrame} />}
+                    {!user && <Route path='/login' component={Login}/>}
+                    {!user && <Route path='/signup' component={Signup} />}
+                    <Route path='*' component={NotFound} />
+                </Switch>
         </Router>
     )
 

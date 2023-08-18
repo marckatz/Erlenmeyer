@@ -2,15 +2,20 @@ import React, { useContext, useEffect, useState } from "react";
 import TableCard from "./TableCard";
 import { UserContext } from "../context/user";
 import NewTable from "./NewTable";
+import NewSchema from "./NewSchema";
+import Form from "react-bootstrap/Form"
+import Row from "react-bootstrap/Row"
+import Col from "react-bootstrap/Col"
+import Button from "react-bootstrap/Button"
+import Collapse from 'react-bootstrap/Collapse';
 
 function SchemaFrame() {
     const { user } = useContext(UserContext)
-    const [currentId, setCurrentId] = useState(0)
+    const [currentId, setCurrentId] = useState(1)
     const [schema, setSchema] = useState(null)
     const [reset, setReset] = useState(false)
-    const [newSchemaName, setNewSchemaName] = useState('')
     const [showNewSchemaForm, setShowNewSchemaForm] = useState(false)
-    const [schemaList, setSchemaList] = useState(user.schemas.map(s => <option key={s.id} value={s.id}>{s.name}</option>))
+    const [schemaList, setSchemaList] = useState([])
 
     useEffect(() => {
         if (currentId > 0) {
@@ -21,29 +26,17 @@ function SchemaFrame() {
                     }
                 })
         }
-    }, [currentId, reset])
+        fetch(`/schemasByUserid/${user.id}`)
+            .then(r => r.json())
+            .then(schemas => setSchemaList(schemas.map(s => <option key={s.id} value={s.id}>{s.name}</option>)))
+    }, [currentId, reset, user.id])
 
     const table_list = schema && schema.tables.map(table => {
         return <TableCard key={table.id} table={table} />
     })
 
-    function handleNewTableSubmit(e, newTableName, setNewTableName) {
-        e.preventDefault()
-        const newTable = {
-            name: newTableName,
-            schema_id: currentId
-        }
-        fetch('/tables', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(newTable)
-        })
-            .then(r => r.json())
-            .then(t => {
-                setSchema(s => { return { 'name': s.name, 'tables': [...s.tables, t] } })
-                setNewTableName('')
-                setReset(!reset)
-            })
+    function forceReset() {
+        setReset(r=>!r)
     }
 
     function handleExport() {
@@ -61,80 +54,48 @@ function SchemaFrame() {
             })
     }
 
-    function handleNewSchema(e){
+    function handleSchemaChange(e) {
         e.preventDefault()
-        let newSchema = {
-            name:newSchemaName
-        }
-        fetch('/schemas', {
-            method: 'POST',
-            headers:{ 'Content-Type': 'application/json' },
-            body: JSON.stringify(newSchema)
-        })
-        .then(r=>r.json())
-        .then(s => {
-            newSchema = s
-            const newUS = {
-                schema_id:newSchema.id,
-                user_id:user.id
-            }
-            fetch('/userschemas', {
-                method: 'POST',
-                headers:{ 'Content-Type': 'application/json' },
-                body: JSON.stringify(newUS)
-            })
-        })
-        .then(a=>{
-            setCurrentId(newSchema.id)
-            setNewSchemaName('')
-            setShowNewSchemaForm(false)
-            setSchemaList(sl => [...sl, <option key={newSchema.id} value={newSchema.id}>{newSchema.name}</option>])
-        })
+        setCurrentId(e.target.value)
+        setShowNewSchemaForm(false)
     }
-
-    function handleToggleForm(e){
-        e.preventDefault()
-        setShowNewSchemaForm(true)
-    }
-
     return (
-        <div>
-            <form className="d-flex" onSubmit={e => e.preventDefault()}>
-                <select className="col form-select" id="schema" onChange={e=>setCurrentId(e.target.value)} value={currentId}>
-                    <option value={0} disabled>Select Schema</option>
-                    {schemaList}
-                    <option value={currentId} onClick={handleToggleForm}>New Schema</option>
-                </select>
-            </form>
-            {showNewSchemaForm ? (
-                <form className="row row-cols-sm-auto align-items-center" onSubmit={handleNewSchema}>
-                    <div className="col-12">
-                        <div className="input-group has-validation">
-                            <label className="visually-hidden form-label" htmlFor="new-schema">new schema</label>
-                                <input
-                                    type="text"
-                                    className={`form-control is-${newSchemaName===''?'in':''}valid`}
-                                    id="new-schema-input"
-                                    placeholder="New Schema"
-                                    value={newSchemaName}
-                                    onChange={e => setNewSchemaName(e.target.value)}
-                                    required
-                                    aria-describedby="new-schema-feedback"
-                                />
-                            <div className="invalid-feedback" id='new-schema-feedback'>Schema name required</div>
-                        </div>
-                    </div>
-                    <div className="col-12">
-                        <button type="submit" className="btn btn-primary">Add Schema</button>
-                    </div>
-                </form>
-            ) : null}
+        <div className="mx-5 my-2">
+            <Row>
+                <Col sm='10'>
+                    <Form onSubmit={e => e.preventDefault()}>
+                        <Form.Group as={Row} >
+                            <Form.Label column sm="2" className="text-end">Select Schema:</Form.Label>
+                            <Col sm='10'>
+                                <Form.Select id="schema" onChange={handleSchemaChange} value={currentId}>
+                                    {schemaList}
+                                </Form.Select>
+                            </Col>
+                        </Form.Group>
+                    </Form>
+                </Col>
+                <Col sm='2'>
+                    <Button
+                        onClick={() => setShowNewSchemaForm(!showNewSchemaForm)}
+                        aria-controls="schemaForm"
+                        aria-expanded={showNewSchemaForm}>
+                        New Schema
+                    </Button>
+                </Col>
+            </Row>
+            <Collapse in={showNewSchemaForm}>
+                <div id='schemaForm'>
+                    <NewSchema forceReset={forceReset} setCurrentId={setCurrentId} setShowNewSchemaForm={setShowNewSchemaForm} />
+                </div>
+            </Collapse>
             {schema ? (
                 <>
                     <h1>{schema.name}</h1>
-                    <div className="btn btn-outline-primary" onClick={handleExport}>Export</div>
-                    {table_list}
-                    <NewTable handleNewTableSubmit={handleNewTableSubmit} />
+                    <Button variant="outline-primary" onClick={handleExport}>Export</Button>
+                    <Row md='3' className="gy-3">
+                        {table_list}
+                    </Row>
+                    <NewTable currentId={currentId} forceReset={forceReset} />
                 </>
             ) : null}
         </div>

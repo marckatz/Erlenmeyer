@@ -133,6 +133,10 @@ def export_schema(id):
     else:
         make_response({'error':'Schema not found'}, 404)
 
+@app.route('/schemasByUserid/<int:id>')
+def schemasByUserid(id):
+    schemas = [schema.to_dict() for schema in User.query.filter_by(id=id).first().schemas]
+    return make_response(schemas, 200)
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
