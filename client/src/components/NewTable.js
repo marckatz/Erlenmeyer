@@ -30,6 +30,7 @@ function NewTable({ currentId, forceReset }) {
                 .then(r => r.json())
                 .then(t => {
                     forceReset()
+                    values.name=''
                 })
         }
     })

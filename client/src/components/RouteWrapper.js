@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { Suspense, useContext, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import SchemaFrame from './SchemaFrame';
 import Navbar from './Navbar';
@@ -21,16 +21,14 @@ function RouteWrapper(){
 
     return (
         <Router>
-            <div>
-            <Navbar />
-            <Switch>
-                <Route exact path='/' component={Home} />
-                {user && <Route path='/schema' component={SchemaFrame} />}
-                {!user && <Route path='/login' component={Login}/>}
-                {!user && <Route path='/signup' component={Signup} />}
-                <Route path='*' component={NotFound} />
-            </Switch>
-            </div>
+                <Navbar />
+                <Switch>
+                    <Route exact path='/' component={Home} />
+                    {user && <Route path='/schema' component={SchemaFrame} />}
+                    {!user && <Route path='/login' component={Login}/>}
+                    {!user && <Route path='/signup' component={Signup} />}
+                    <Route path='*' component={NotFound} />
+                </Switch>
         </Router>
     )
 

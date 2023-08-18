@@ -58,10 +58,10 @@ function NewSchema({ forceReset, setCurrentId, setShowNewSchemaForm }) {
                                     type="text"
                                     placeholder="Schema Name"
                                     value={newSchemaName}
-                                    onChange={e => {{
+                                    onChange={e => {
                                         setNewSchemaName(e.target.value)
                                         setIsNotValid(false)
-                                    }}}
+                                    }}
                                     isInvalid={isNotValid} />
                                     <Form.Control.Feedback type="invalid" tooltip>
                                         Must enter a name for the schema

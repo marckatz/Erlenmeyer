@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import TableCard from "./TableCard";
 import { UserContext } from "../context/user";
 import NewTable from "./NewTable";
+import NewSchema from "./NewSchema";
 import Form from "react-bootstrap/Form"
 import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
 import Button from "react-bootstrap/Button"
-import NewSchema from "./NewSchema";
 import Collapse from 'react-bootstrap/Collapse';
 
 function SchemaFrame() {
@@ -38,8 +38,6 @@ function SchemaFrame() {
     function forceReset() {
         setReset(!reset)
     }
-
-
 
     function handleExport() {
         fetch(`/schema/${schema.id}/export`)
