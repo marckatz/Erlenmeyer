@@ -9,9 +9,19 @@ function ShareModal({schemaId}) {
     const {user} = useContext(UserContext)
     const [shareUsername, setShareUsername] = useState('')
     const [usernameError, setUsernameError] = useState('')
+    const [variant, setVariant] = useState('primary')
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    function successClose(){
+        setVariant('success')
+        setTimeout(() => {
+            setVariant('primary')
+            setShow(false)
+        }, 1000);
+
+    }
 
     function handleShare(e) {
         e.preventDefault()
@@ -34,7 +44,7 @@ function ShareModal({schemaId}) {
                         })
                         .then(r => {
                             if(r.ok){
-                                console.log('shared')
+                                successClose()
                                 setUsernameError('')
                             }
                             else if(r.status === 400){
@@ -84,7 +94,7 @@ function ShareModal({schemaId}) {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="outline-success" type="submit" form="shareForm">Share</Button>
+                    <Button variant={"outline-"+variant} type="submit" form="shareForm">Share{variant==='primary'?'':'d ✓'}</Button>
                     <Button variant="outline-secondary" onClick={handleClose}>Close</Button>
                 </Modal.Footer>
             </Modal>
