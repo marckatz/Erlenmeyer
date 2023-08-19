@@ -14,7 +14,7 @@ function SchemaCard({ schema }) {
             return users[0].username + " and " + users[1].username
         }
         else {
-            return users.slice(0, -1).map(u => u.name + ', ') + 'and ' + users.at(-1).name
+            return users.slice(0, -1).map(u => u.username).join(', ') + ', and ' + users.at(-1).username
         }
     }
 

@@ -52,6 +52,18 @@ function SchemaFrame() {
         setReset(r => !r)
     }
 
+    const displayUsers = () => {
+        if (schema.users.length === 1) {
+            return schema.users[0].username
+        }
+        else if (schema.users.length === 2) {
+            return schema.users[0].username + " and " + schema.users[1].username
+        }
+        else {
+            return schema.users.slice(0, -1).map(u => u.username).join(', ') + ', and ' + schema.users.at(-1).username
+        }
+    }
+
     function handleExport() {
         fetch(`/schema/${schema.id}/export`)
             .then(r => r.json())
@@ -70,7 +82,6 @@ function SchemaFrame() {
     function handleSchemaChange(e) {
         e.preventDefault()
         setCurrentId(e.target.value)
-        
         setShowNewSchemaForm(false)
     }
 
@@ -109,8 +120,9 @@ function SchemaFrame() {
                     <Row className="align-items-center">
                         <Col md='auto'><h1>{schema.name}</h1></Col>
                         <Col md='auto'><Button variant="outline-primary" onClick={handleExport}>Export</Button></Col>
-                        <Col md='auto'><ShareModal schemaId={currentId} /></Col>
+                        <Col md='auto'><ShareModal schemaId={currentId} reset={forceReset}/></Col>
                     </Row>
+                    <h4 className="ms-4 text-muted">By {displayUsers()}</h4>
                     <hr />
                     <Row md='3' className="gy-3">
                         {table_list}

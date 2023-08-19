@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import { UserContext } from '../context/user'
 
-function ShareModal({schemaId}) {
+function ShareModal({schemaId, reset}) {
     const [show, setShow] = useState(false)
     const {user} = useContext(UserContext)
     const [shareUsername, setShareUsername] = useState('')
@@ -20,7 +20,7 @@ function ShareModal({schemaId}) {
             setVariant('primary')
             setShow(false)
         }, 1000);
-
+        reset()
     }
 
     function handleShare(e) {

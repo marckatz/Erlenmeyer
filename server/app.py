@@ -59,7 +59,7 @@ class SchemasById(Resource):
     def get(self, id):
         schema = Schema.query.filter_by(id=id).first()
         if schema:
-            return make_response(schema.to_dict(), 200)
+            return make_response(schema.to_dict(only=('id','name','tables','users.id','users.username')), 200)
         else:
             return make_response({'error':'Schema not found'}, 404)
 
