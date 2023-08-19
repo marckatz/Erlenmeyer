@@ -9,22 +9,31 @@ import Col from "react-bootstrap/Col"
 import Button from "react-bootstrap/Button"
 import Collapse from 'react-bootstrap/Collapse';
 import ShareModal from "./ShareModal";
+import { useLocation } from "react-router-dom";
 
 function SchemaFrame() {
+    const location = useLocation()
     const { user } = useContext(UserContext)
-    //REMEMBER TO CHANGE INITIAL SCHEMA TO 0
-    const [currentId, setCurrentId] = useState(1)
+    const [currentId, setCurrentId] = useState(0)
     const [schema, setSchema] = useState(null)
     const [reset, setReset] = useState(false)
     const [showNewSchemaForm, setShowNewSchemaForm] = useState(false)
     const [schemaList, setSchemaList] = useState([])
+
+    useEffect(() =>{
+        setCurrentId(location.state?location.state.id:0)
+    },[])
 
     useEffect(() => {
         if (currentId > 0) {
             fetch(`/schemas/${currentId}`)
                 .then(r => {
                     if (r.ok) {
-                        r.json().then(s => setSchema(s))
+                        r.json().then(s => {
+                            if(user && user.schemas.map(us=>us.id).includes(s.id)){
+                                setSchema(s)
+                            }
+                        })
                     }
                 })
         }
@@ -41,6 +50,18 @@ function SchemaFrame() {
 
     function forceReset() {
         setReset(r => !r)
+    }
+
+    const displayUsers = () => {
+        if (schema.users.length === 1) {
+            return schema.users[0].username
+        }
+        else if (schema.users.length === 2) {
+            return schema.users[0].username + " and " + schema.users[1].username
+        }
+        else {
+            return schema.users.slice(0, -1).map(u => u.username).join(', ') + ', and ' + schema.users.at(-1).username
+        }
     }
 
     function handleExport() {
@@ -63,8 +84,6 @@ function SchemaFrame() {
         setCurrentId(e.target.value)
         setShowNewSchemaForm(false)
     }
-
-    function handleShare() { }
 
     return (
         <div className="mx-5 my-2">
@@ -101,8 +120,9 @@ function SchemaFrame() {
                     <Row className="align-items-center">
                         <Col md='auto'><h1>{schema.name}</h1></Col>
                         <Col md='auto'><Button variant="outline-primary" onClick={handleExport}>Export</Button></Col>
-                        <Col md='auto'><ShareModal schemaId={currentId} /></Col>
+                        <Col md='auto'><ShareModal schemaId={currentId} reset={forceReset}/></Col>
                     </Row>
+                    <h4 className="ms-4 text-muted">By {displayUsers()}</h4>
                     <hr />
                     <Row md='3' className="gy-3">
                         {table_list}

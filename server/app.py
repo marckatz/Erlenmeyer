@@ -59,7 +59,7 @@ class SchemasById(Resource):
     def get(self, id):
         schema = Schema.query.filter_by(id=id).first()
         if schema:
-            return make_response(schema.to_dict(), 200)
+            return make_response(schema.to_dict(only=('id','name','tables','users.id','users.username')), 200)
         else:
             return make_response({'error':'Schema not found'}, 404)
 
@@ -170,7 +170,7 @@ def export_schema(id):
 
 @app.route('/schemasByUserid/<int:id>')
 def schemasByUserid(id):
-    schemas = [schema.to_dict() for schema in User.query.filter_by(id=id).first().schemas]
+    schemas = [schema.to_dict(only=('users.username', 'users.id','id','name','tables')) for schema in User.query.filter_by(id=id).first().schemas]
     return make_response(schemas, 200)
 
 @app.route('/users/<string:username>')
