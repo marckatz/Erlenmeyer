@@ -108,10 +108,8 @@ function Signup() {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="outline-secondary" onClick={handleClose}>
-                        Close
-                    </Button>
                     <Button variant="outline-success" type="submit" form="signupForm">Sign Up</Button>
+                    <Button variant="outline-secondary" onClick={handleClose}>Close</Button>
                 </Modal.Footer>
             </Modal>
         </>

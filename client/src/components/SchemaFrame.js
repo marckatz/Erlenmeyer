@@ -8,9 +8,11 @@ import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
 import Button from "react-bootstrap/Button"
 import Collapse from 'react-bootstrap/Collapse';
+import ShareModal from "./ShareModal";
 
 function SchemaFrame() {
     const { user } = useContext(UserContext)
+    //REMEMBER TO CHANGE INITIAL SCHEMA TO 0
     const [currentId, setCurrentId] = useState(1)
     const [schema, setSchema] = useState(null)
     const [reset, setReset] = useState(false)
@@ -26,17 +28,19 @@ function SchemaFrame() {
                     }
                 })
         }
-        fetch(`/schemasByUserid/${user.id}`)
-            .then(r => r.json())
-            .then(schemas => setSchemaList(schemas.map(s => <option key={s.id} value={s.id}>{s.name}</option>)))
-    }, [currentId, reset, user.id])
+        if (user) {
+            fetch(`/schemasByUserid/${user.id}`)
+                .then(r => r.json())
+                .then(schemas => setSchemaList(schemas.map(s => <option key={s.id} value={s.id}>{s.name}</option>)))
+        }
+    }, [currentId, reset, user])
 
     const table_list = schema && schema.tables.map(table => {
         return <TableCard key={table.id} table={table} />
     })
 
     function forceReset() {
-        setReset(r=>!r)
+        setReset(r => !r)
     }
 
     function handleExport() {
@@ -59,6 +63,9 @@ function SchemaFrame() {
         setCurrentId(e.target.value)
         setShowNewSchemaForm(false)
     }
+
+    function handleShare() { }
+
     return (
         <div className="mx-5 my-2">
             <Row>
@@ -68,6 +75,7 @@ function SchemaFrame() {
                             <Form.Label column sm="2" className="text-end">Select Schema:</Form.Label>
                             <Col sm='10'>
                                 <Form.Select id="schema" onChange={handleSchemaChange} value={currentId}>
+                                    <option disabled value='0'>Select Schema</option>
                                     {schemaList}
                                 </Form.Select>
                             </Col>
@@ -90,8 +98,12 @@ function SchemaFrame() {
             </Collapse>
             {schema ? (
                 <>
-                    <h1>{schema.name}</h1>
-                    <Button variant="outline-primary" onClick={handleExport}>Export</Button>
+                    <Row className="align-items-center">
+                        <Col md='auto'><h1>{schema.name}</h1></Col>
+                        <Col md='auto'><Button variant="outline-primary" onClick={handleExport}>Export</Button></Col>
+                        <Col md='auto'><ShareModal schemaId={currentId} /></Col>
+                    </Row>
+                    <hr />
                     <Row md='3' className="gy-3">
                         {table_list}
                     </Row>

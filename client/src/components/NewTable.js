@@ -37,8 +37,8 @@ function NewTable({ currentId, forceReset }) {
 
     return (
         <Form className="d-flex mt-3" noValidate onSubmit={formik.handleSubmit}>
-            <Row className="align-items-center">
-                <Col xs='auto'>
+            <Row style={{width:'33.333333%'}} className="justify-content-between">
+                <Col >
                     <Form.Group controlId="formTable" className="position-relative">
                         <Form.Control
                             type="text"
@@ -53,7 +53,7 @@ function NewTable({ currentId, forceReset }) {
                         </Form.Control.Feedback>
                     </Form.Group>
                 </Col>
-                <Col>
+                <Col xs='auto'>
                     <Button type="submit" variant="outline-primary">Submit</Button>
                 </Col>
             </Row>

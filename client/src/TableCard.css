@@ -1,17 +1,5 @@
-.name-col{
-    width: 45%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.type-col{
-    width: 35%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.button-col{
-    width: 30%;
+.table-col{
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }

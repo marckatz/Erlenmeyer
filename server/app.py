@@ -31,9 +31,19 @@ class Users(Resource):
             session['user_id'] = new_user.id
             return make_response(new_user.to_dict(), 201)
         except IntegrityError as e:
-            return make_response({'error':f'Username already exists'}, 400)
+            return make_response({'error':'Username already exists'}, 400)
 
 api.add_resource(Users, '/users')
+
+class UsersById(Resource):
+    def get(self, id):
+        user = User.query.filter_by(id=id).first()
+        if not user:
+            return make_response({"error" : "User not found"}, 404)
+        else:
+            return make_response(user.to_dict(only=('id','username','schemas.id', 'schemas.name')), 200)
+
+api.add_resource(UsersById, '/users/<int:id>')
 
 class Schemas(Resource):
     def post(self):
@@ -59,10 +69,12 @@ class UserSchemas(Resource):
     def post(self):
         data = request.get_json()
         new_us = UserSchema(user_id=data['user_id'], schema_id=data['schema_id'])
-        db.session.add(new_us)
-        db.session.commit()
-        return make_response(new_us.to_dict(), 201)
-
+        try:
+            db.session.add(new_us)
+            db.session.commit()
+            return make_response(new_us.to_dict(), 201)
+        except IntegrityError as e:
+            return make_response({'error':'user_schema already exists'}, 400)
 api.add_resource(UserSchemas, '/userschemas')
 
 class Tables(Resource):
@@ -97,6 +109,29 @@ class Columns(Resource):
         return make_response(new_column.to_dict(), 201)
 
 api.add_resource(Columns, '/columns')
+
+class ColumnsById(Resource):
+    def patch(self, id):
+        column = Column.query.filter_by(id=id).first()
+        data = request.get_json()
+        if not column:
+            return make_response({'error':'column not found'}, 404)
+        else:
+            for key in data:
+                setattr(column, key, data[key])
+            db.session.commit()
+            return make_response(column.to_dict(), 202)
+        
+    def delete(self, id):
+        column = Column.query.filter_by(id=id).first()
+        if not column:
+            return make_response({'error':'column not found'}, 404)
+        else:
+            db.session.delete(column)
+            db.session.commit()
+            return make_response({}, 204)
+
+api.add_resource(ColumnsById, '/columns/<int:id>')
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -137,6 +172,14 @@ def export_schema(id):
 def schemasByUserid(id):
     schemas = [schema.to_dict() for schema in User.query.filter_by(id=id).first().schemas]
     return make_response(schemas, 200)
+
+@app.route('/users/<string:username>')
+def userByUsername(username):
+    user = User.query.filter_by(username=username).first()
+    if user:
+        return make_response(user.to_dict(only=('id','username','schemas.id', 'schemas.name')), 200)
+    else:
+        return make_response({'error':'User not found'}, 404)
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

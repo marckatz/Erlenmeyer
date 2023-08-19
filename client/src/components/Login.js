@@ -96,10 +96,8 @@ function Login() {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="outline-secondary" onClick={handleClose}>
-                        Close
-                    </Button>
                     <Button variant="outline-success" type="submit" form="loginForm">Log In</Button>
+                    <Button variant="outline-secondary" onClick={handleClose}>Close</Button>
                 </Modal.Footer>
             </Modal>
         </>
