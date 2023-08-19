@@ -8,6 +8,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button'
 import { LinkContainer } from 'react-router-bootstrap'
+import { Link } from "react-router-dom/cjs/react-router-dom";
 
 function Navbar() {
     const { user, setUser } = useContext(UserContext)
@@ -37,7 +38,10 @@ function Navbar() {
                 <BNavbar.Collapse id="navbar" className="justify-content-end">
                     <Nav>
                         {user ? (
+                            <>
+                            <Link to='/profile'><Button variant="outline-primary" className="me-2">Profile</Button></Link>
                             <Button variant="outline-danger" className="me-2" onClick={handleLogout}>Log Out</Button>
+                            </>
                         ) : (
                             <>
                                 <Signup />

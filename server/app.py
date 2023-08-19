@@ -170,7 +170,7 @@ def export_schema(id):
 
 @app.route('/schemasByUserid/<int:id>')
 def schemasByUserid(id):
-    schemas = [schema.to_dict() for schema in User.query.filter_by(id=id).first().schemas]
+    schemas = [schema.to_dict(only=('users.username', 'users.id','id','name','tables')) for schema in User.query.filter_by(id=id).first().schemas]
     return make_response(schemas, 200)
 
 @app.route('/users/<string:username>')

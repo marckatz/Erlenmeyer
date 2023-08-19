@@ -9,22 +9,31 @@ import Col from "react-bootstrap/Col"
 import Button from "react-bootstrap/Button"
 import Collapse from 'react-bootstrap/Collapse';
 import ShareModal from "./ShareModal";
+import { useLocation } from "react-router-dom";
 
 function SchemaFrame() {
+    const location = useLocation()
     const { user } = useContext(UserContext)
-    //REMEMBER TO CHANGE INITIAL SCHEMA TO 0
-    const [currentId, setCurrentId] = useState(1)
+    const [currentId, setCurrentId] = useState(0)
     const [schema, setSchema] = useState(null)
     const [reset, setReset] = useState(false)
     const [showNewSchemaForm, setShowNewSchemaForm] = useState(false)
     const [schemaList, setSchemaList] = useState([])
+
+    useEffect(() =>{
+        setCurrentId(location.state?location.state.id:0)
+    },[])
 
     useEffect(() => {
         if (currentId > 0) {
             fetch(`/schemas/${currentId}`)
                 .then(r => {
                     if (r.ok) {
-                        r.json().then(s => setSchema(s))
+                        r.json().then(s => {
+                            if(user && user.schemas.map(us=>us.id).includes(s.id)){
+                                setSchema(s)
+                            }
+                        })
                     }
                 })
         }
@@ -61,10 +70,9 @@ function SchemaFrame() {
     function handleSchemaChange(e) {
         e.preventDefault()
         setCurrentId(e.target.value)
+        
         setShowNewSchemaForm(false)
     }
-
-    function handleShare() { }
 
     return (
         <div className="mx-5 my-2">
