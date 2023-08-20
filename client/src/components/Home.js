@@ -1,10 +1,8 @@
-import React, { useContext } from "react";
-import { UserContext } from "../context/user";
+import React from "react";
 import logo from "../erlogo.png"
 import "../Home.css"
 
 function Home(){
-    const {user} = useContext(UserContext)
 
     return (
         <div>

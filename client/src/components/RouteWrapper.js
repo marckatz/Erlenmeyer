@@ -4,7 +4,7 @@ import { UserContext } from "../context/user";
 import SchemaFrame from './SchemaFrame';
 import Navbar from './Navbar';
 import Home from './Home';
-import BlankSchema from './BlankSchema';
+import UserlessSchemaFrame from './UserlessSchemaFrame';
 import NotFound from "./NotFound";
 import Profile from './Profile'
 
@@ -26,7 +26,7 @@ function RouteWrapper(){
                 <Switch>
                     <Route exact path='/' component={Home} />
                     {user && <Route path='/schema' component={SchemaFrame} />}
-                    {!user && <Route path='/schema' component={BlankSchema} />}
+                    {!user && <Route path='/schema' component={UserlessSchemaFrame} />}
                     <Route path='/profile' component={Profile} />
                     <Route path='*' component={NotFound} />
                 </Switch>

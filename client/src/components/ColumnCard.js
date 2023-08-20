@@ -7,7 +7,7 @@ import * as yup from 'yup'
 import { useFormik } from "formik";
 
 function ColumnCard({ column, handleDelete }) {
-    const { id, column_type, is_pk } = column
+    const { id, column_type } = column
     const [name, setName] = useState(column.name)
     const [beingEdited, setBeingEdited] = useState(false)
     const formSchema = yup.object().shape({
