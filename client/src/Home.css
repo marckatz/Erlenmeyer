@@ -1,0 +1,16 @@
+:root{
+    --logo-background-color: 163,163,163;
+}
+.home-logo{
+    background-color: rgb(var(--logo-background-color));
+    border: 10px solid black;
+    border-radius: 20%;
+    display: block;
+    margin: 2rem auto;
+    width: 50%;
+}
+
+.nav-logo{
+    background-color: rgb(var(--logo-background-color));
+    border-radius: 20%;
+}

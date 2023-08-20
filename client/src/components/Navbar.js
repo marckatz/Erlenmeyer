@@ -8,16 +8,19 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Link } from "react-router-dom/cjs/react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import '../Home.css'
 
 function Navbar() {
     const { user, setUser } = useContext(UserContext)
+    const history = useHistory()
 
     function handleLogout() {
         fetch('/logout', {
             method: "DELETE",
         }).then(() => {
             setUser(null);
+            history.push('/')
         })
     }
 
@@ -30,7 +33,7 @@ function Navbar() {
                             src={logo}
                             alt="Erlenmeyer"
                             style={{ width: '40px' }}
-                            className='rounded-3 me-1' />
+                            className='nav-logo me-1' />
                         Erlenmeyer
                     </BNavbar.Brand>
                 </LinkContainer>
