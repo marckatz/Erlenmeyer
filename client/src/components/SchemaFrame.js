@@ -22,7 +22,7 @@ function SchemaFrame() {
 
     useEffect(() =>{
         setCurrentId(location.state?location.state.id:0)
-    },[])
+    },[location.state])
 
     useEffect(() => {
         if (currentId > 0) {
