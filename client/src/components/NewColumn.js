@@ -62,7 +62,11 @@ function NewColumn({ tableId, setColumns }) {
                 </Col>
                 <Col style={{ flexBasis: '35%' }}>
                     <Form.Group controlId="formTableType" className="position-relative">
-                        <Form.Select onChange={e => formik.handleChange(e)} value={formik.values.colType} name='colType' isInvalid={!!formik.errors.colType}>
+                        <Form.Select 
+                            onChange={e => formik.handleChange(e)} 
+                            value={formik.values.colType} name='colType' 
+                            isInvalid={!!formik.errors.colType}
+                        >
                             <option disabled value={0}>Type</option>
                             {COLUMN_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
                         </Form.Select>

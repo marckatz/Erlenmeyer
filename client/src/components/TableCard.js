@@ -41,6 +41,11 @@ function TableCard({ table }) {
                         <Col className="table-col border" style={{ flexBasis: '40%' }}></Col>
                     </Row>
                     {create_rows}
+                    <Collapse in={show}>
+                        <div id='columnForm'>
+                            <NewColumn setColumns={setColumns} tableId={id} />
+                        </div>
+                    </Collapse>
                     <Button
                         onClick={() => setShow(!show)}
                         aria-controls="columnForm"
@@ -48,11 +53,6 @@ function TableCard({ table }) {
                         className="my-2">
                         {show ? 'Close ' : ''}New Column
                     </Button>
-                    <Collapse in={show}>
-                        <div id='columnForm'>
-                            <NewColumn setColumns={setColumns} tableId={id} />
-                        </div>
-                    </Collapse>
                 </Card.Body>
             </Card>
         </Col>

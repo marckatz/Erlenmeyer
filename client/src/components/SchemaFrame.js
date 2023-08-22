@@ -1,18 +1,21 @@
 import React, { useContext, useEffect, useState } from "react";
-import TableCard from "./TableCard";
+import { useLocation, useHistory } from "react-router-dom";
 import { UserContext } from "../context/user";
+
+import TableCard from "./TableCard";
 import NewTable from "./NewTable";
 import NewSchema from "./NewSchema";
+import ShareModal from "./ShareModal";
+
 import Form from "react-bootstrap/Form"
 import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
 import Button from "react-bootstrap/Button"
 import Collapse from 'react-bootstrap/Collapse';
-import ShareModal from "./ShareModal";
-import { useLocation } from "react-router-dom";
 
 function SchemaFrame() {
     const location = useLocation()
+    const history = useHistory()
     const { user } = useContext(UserContext)
     const [currentId, setCurrentId] = useState(0)
     const [schema, setSchema] = useState(null)
@@ -25,22 +28,24 @@ function SchemaFrame() {
     }, [location.state])
 
     useEffect(() => {
+        if (user) {
+            fetch(`/schemasByUserid/${user.id}`)
+                .then(r => r.json())
+                .then(schemas => setSchemaList(schemas.map(s => <option key={s.id} value={s.id}>{s.name}</option>)))
+        }
         if (currentId > 0) {
             fetch(`/schemas/${currentId}`)
                 .then(r => {
                     if (r.ok) {
                         r.json().then(s => {
-                            if (user && user.schemas.map(us => us.id).includes(s.id)) {
-                                setSchema(s)
-                            }
+                            // TODO: validate user has schema
+                            setSchema(s)
                         })
                     }
+                    else{
+                        history.push('/notfound')
+                    }
                 })
-        }
-        if (user) {
-            fetch(`/schemasByUserid/${user.id}`)
-                .then(r => r.json())
-                .then(schemas => setSchemaList(schemas.map(s => <option key={s.id} value={s.id}>{s.name}</option>)))
         }
     }, [currentId, reset, user])
 
@@ -80,14 +85,13 @@ function SchemaFrame() {
     }
 
     function handleSchemaChange(e) {
-        e.preventDefault()
-        setCurrentId(e.target.value)
         setShowNewSchemaForm(false)
+        history.replace('/schema', {id:e.target.value })
     }
 
     return (
-        <div className="mx-5 my-2">
-            <Row>
+        <div className="mx-5">
+            <Row className="my-3">
                 <Col sm='10'>
                     <Form onSubmit={e => e.preventDefault()}>
                         <Form.Group as={Row} >
@@ -112,7 +116,7 @@ function SchemaFrame() {
             </Row>
             <Collapse in={showNewSchemaForm}>
                 <div id='schemaForm'>
-                    <NewSchema forceReset={forceReset} setCurrentId={setCurrentId} setShowNewSchemaForm={setShowNewSchemaForm} />
+                    <NewSchema setShowNewSchemaForm={setShowNewSchemaForm} />
                 </div>
             </Collapse>
             {schema ? (
