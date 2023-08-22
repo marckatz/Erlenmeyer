@@ -74,7 +74,7 @@ function ColumnCard({ column, handleDelete }) {
                             </Button>
                         ) : (
                             <Button
-                                onClick={()=>handleDelete(id)}
+                                onClick={() => handleDelete(id)}
                                 className="py-0 px-1"
                                 style={{ margin: '1px 0' }}
                                 variant="outline-danger">

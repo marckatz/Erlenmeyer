@@ -4,22 +4,22 @@ import SchemaCard from './SchemaCard'
 import Row from "react-bootstrap/Row"
 
 function Profile() {
-    const {user} = useContext(UserContext)
+    const { user } = useContext(UserContext)
     const [schemas, setSchemas] = useState([])
 
     useEffect(() => {
-        if(user){
+        if (user) {
             fetch(`/schemasByUserid/${user.id}`)
-            .then(r => r.json())
-            .then(schemas => setSchemas(schemas))
+                .then(r => r.json())
+                .then(schemas => setSchemas(schemas))
         }
-    },[user])
+    }, [user])
 
     const schemaCards = schemas.map(schema => {
         return <SchemaCard key={schema.id} schema={schema} />
     })
 
-    return (user? (
+    return (user ? (
         <div className="mx-5 my-2">
             <h1>{user.username}'s Profile</h1>
             <hr />

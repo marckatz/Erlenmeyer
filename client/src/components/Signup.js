@@ -21,8 +21,8 @@ function Signup() {
     const passwordMin = 6
     const passwordMax = 15
     const formSchema = yup.object().shape({
-        username: yup.string().required("Must enter a name").min(usernameMin,`Username must have at least ${usernameMin} characters`).max(usernameMax,`Username must have at most ${usernameMax} characters`),
-        password: yup.string().required("Must enter a password").min(passwordMin,`Password must have at least ${passwordMin} characters`).max(passwordMax,`Password must have at most ${passwordMax} characters`),
+        username: yup.string().required("Must enter a name").min(usernameMin, `Username must have at least ${usernameMin} characters`).max(usernameMax, `Username must have at most ${usernameMax} characters`),
+        password: yup.string().required("Must enter a password").min(passwordMin, `Password must have at least ${passwordMin} characters`).max(passwordMax, `Password must have at most ${passwordMax} characters`),
     });
 
     const formik = useFormik({
@@ -85,7 +85,7 @@ function Signup() {
                                 isValid={!formik.errors.username && formik.values.username}
                                 required />
                             <Form.Control.Feedback type="invalid" tooltip>
-                                {usernameError?usernameError:formik.errors.username}
+                                {usernameError ? usernameError : formik.errors.username}
                             </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group className='mb-3 position-relative' controlId='formPassword'>

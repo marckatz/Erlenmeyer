@@ -13,15 +13,15 @@ function TableCard({ table }) {
     const [columns, setColumns] = useState(table.columns)
     const [show, setShow] = useState(false)
 
-    function handleDelete(columnId){
-        fetch(`/columns/${columnId}`,{
-            method:"DELETE"
+    function handleDelete(columnId) {
+        fetch(`/columns/${columnId}`, {
+            method: "DELETE"
         })
-        .then(r => {
-            if(r.ok){
-                setColumns(cs=>cs.filter(c => c.id !== columnId))
-            }
-        })
+            .then(r => {
+                if (r.ok) {
+                    setColumns(cs => cs.filter(c => c.id !== columnId))
+                }
+            })
     }
 
     const create_rows = columns.map((col) => {
@@ -36,17 +36,17 @@ function TableCard({ table }) {
                         {name}
                     </Card.Title>
                     <Row className="border mx-0">
-                        <Col className="table-col border" style={{flexBasis:'25%'}}>Name</Col>
-                        <Col className="table-col border" style={{flexBasis:'35%'}}>Type</Col>
-                        <Col className="table-col border" style={{flexBasis:'40%'}}></Col>
+                        <Col className="table-col border" style={{ flexBasis: '25%' }}>Name</Col>
+                        <Col className="table-col border" style={{ flexBasis: '35%' }}>Type</Col>
+                        <Col className="table-col border" style={{ flexBasis: '40%' }}></Col>
                     </Row>
                     {create_rows}
-                    <Button 
+                    <Button
                         onClick={() => setShow(!show)}
                         aria-controls="columnForm"
                         aria-expanded={show}
                         className="my-2">
-                        {show?'Close ':''}New Column
+                        {show ? 'Close ' : ''}New Column
                     </Button>
                     <Collapse in={show}>
                         <div id='columnForm'>

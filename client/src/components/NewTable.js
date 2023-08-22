@@ -30,14 +30,14 @@ function NewTable({ currentId, forceReset }) {
                 .then(r => r.json())
                 .then(t => {
                     forceReset()
-                    values.name=''
+                    values.name = ''
                 })
         }
     })
 
     return (
         <Form className="d-flex mt-3" noValidate onSubmit={formik.handleSubmit}>
-            <Row style={{width:'33.333333%'}} className="justify-content-between">
+            <Row style={{ width: '33.333333%' }} className="justify-content-between">
                 <Col >
                     <Form.Group controlId="formTable" className="position-relative">
                         <Form.Control

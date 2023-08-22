@@ -26,7 +26,7 @@ function SchemaCard({ schema }) {
         <Col>
             <Card>
                 <Card.Body>
-                    <Link to={{ pathname: '/schema', state: { id } }} style={{textDecoration:'none'}}><Card.Title>{name}</Card.Title></Link>
+                    <Link to={{ pathname: '/schema', state: { id } }} style={{ textDecoration: 'none' }}><Card.Title>{name}</Card.Title></Link>
                     <Card.Subtitle className='mb-2 text-muted text-truncate'>
                         By {displayUsers()}
                     </Card.Subtitle>

@@ -20,9 +20,9 @@ function SchemaFrame() {
     const [showNewSchemaForm, setShowNewSchemaForm] = useState(false)
     const [schemaList, setSchemaList] = useState([])
 
-    useEffect(() =>{
-        setCurrentId(location.state?location.state.id:0)
-    },[location.state])
+    useEffect(() => {
+        setCurrentId(location.state ? location.state.id : 0)
+    }, [location.state])
 
     useEffect(() => {
         if (currentId > 0) {
@@ -30,7 +30,7 @@ function SchemaFrame() {
                 .then(r => {
                     if (r.ok) {
                         r.json().then(s => {
-                            if(user && user.schemas.map(us=>us.id).includes(s.id)){
+                            if (user && user.schemas.map(us => us.id).includes(s.id)) {
                                 setSchema(s)
                             }
                         })
@@ -120,7 +120,7 @@ function SchemaFrame() {
                     <Row className="align-items-center">
                         <Col md='auto'><h1>{schema.name}</h1></Col>
                         <Col md='auto'><Button variant="outline-primary" onClick={handleExport}>Export</Button></Col>
-                        <Col md='auto'><ShareModal schemaId={currentId} reset={forceReset}/></Col>
+                        <Col md='auto'><ShareModal schemaId={currentId} reset={forceReset} /></Col>
                     </Row>
                     <h4 className="ms-4 text-muted">By {displayUsers()}</h4>
                     <hr />

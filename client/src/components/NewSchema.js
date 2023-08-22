@@ -13,7 +13,7 @@ function NewSchema({ forceReset, setCurrentId, setShowNewSchemaForm }) {
 
     function handleNewSchema(e) {
         e.preventDefault()
-        if(!newSchemaName){
+        if (!newSchemaName) {
             setIsNotValid(true)
             return null
         }
@@ -63,9 +63,9 @@ function NewSchema({ forceReset, setCurrentId, setShowNewSchemaForm }) {
                                         setIsNotValid(false)
                                     }}
                                     isInvalid={isNotValid} />
-                                    <Form.Control.Feedback type="invalid" tooltip>
-                                        Must enter a name for the schema
-                                    </Form.Control.Feedback>
+                                <Form.Control.Feedback type="invalid" tooltip>
+                                    Must enter a name for the schema
+                                </Form.Control.Feedback>
                             </FloatingLabel>
                         </Col>
                     </Row>
