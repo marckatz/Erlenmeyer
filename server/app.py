@@ -139,13 +139,22 @@ class Relationships(Resource):
     
     def post(self):
         data = request.get_json()
-        new_relationship = Relationship(
-            from_many_id = data['from_many_id'],
-            to_one_id = data['to_one_id']
-        )
-        db.session.add(new_relationship)
-        db.session.commit()
-        return make_response(new_relationship.to_dict(), 201)
+        from_many_id = data['from_many_id']
+        to_one_id = data['to_one_id']
+        from_column = Column.query.filter_by(id=from_many_id).first()
+        to_column = Column.query.filter_by(id=to_one_id).first()
+        if from_column.table.id == to_column.table.id:
+            return make_response({'error':'Columns cannot belong to the same table'}, 400)
+        try:
+            new_relationship = Relationship(
+                from_many_id = from_many_id,
+                to_one_id = to_one_id
+            )
+            db.session.add(new_relationship)
+            db.session.commit()
+            return make_response(new_relationship.to_dict(), 201)
+        except IntegrityError as e:
+            return make_response({'error':'Relationship already exists'}, 409)
 
 api.add_resource(Relationships, '/relationships')
 
