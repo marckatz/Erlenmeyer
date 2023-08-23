@@ -206,5 +206,10 @@ def userByUsername(username):
     else:
         return make_response({'error':'User not found'}, 404)
 
+@app.route('/relationships/schema/<int:schema_id>')
+def relationshipsBySchemaId(schema_id):
+    relationships = [r.to_dict() for r in Relationship.query.join(Relationship.from_many).join(Column.table).filter_by(schema_id=schema_id).all()]
+    return make_response(relationships, 200)
+
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
