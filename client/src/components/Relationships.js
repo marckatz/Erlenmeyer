@@ -18,13 +18,20 @@ function Relationships({tables}) {
         currentTable ? setColumnsFrom(currentTable.columns) : setColumnsFrom([])
     }, [selectedTableFrom])
 
+    useEffect(() => {
+        const currentTable = tables.find(table=>table.id==selectedTableTo)
+        currentTable ? setColumnsTo(currentTable.columns) : setColumnsTo([])
+    }, [selectedTableTo])
+
     const tableFromOptions = tables.filter(table=>table.id != selectedTableTo).map(table => <option key={table.id} value={table.id}>{table.name}</option>)
 
     const columnFromOptions = columnsFrom && columnsFrom.map(c => <option key={c.id} value={c.id}>{c.name}</option>)
 
     function handleTableFromChange(e){
         setSelectedTableFrom(e.target.value)
-        setSelectedTableTo(0)
+        if(e.target.value == selectedTableTo) {
+            setSelectedTableTo(0)
+        }
     }
     
     function handleColumnFromChange(e){
@@ -32,10 +39,11 @@ function Relationships({tables}) {
     }
 
     const tableToOptions = tables.filter(table=>table.id != selectedTableFrom).map(table => <option key={table.id} value={table.id}>{table.name}</option>)
+    
+    const columnToOptions = columnsTo && columnsTo.map(c => <option key={c.id} value={c.id}>{c.name}</option>)
 
     function handleTableToChange(e){
         setSelectedTableTo(e.target.value)
-        setSelectedTableFrom(0)
     }
 
     function handleColumnToChange(e){
@@ -59,7 +67,7 @@ function Relationships({tables}) {
             </select>
             <select disabled={selectedTableTo == 0} onChange={handleColumnToChange} value={selectedColumnTo}>
                 <option value='0' disabled>Select Column</option>
-                {columnFromOptions}
+                {columnToOptions}
             </select>
         </>
     )
