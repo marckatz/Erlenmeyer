@@ -12,6 +12,7 @@ import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
 import Button from "react-bootstrap/Button"
 import Collapse from 'react-bootstrap/Collapse';
+import Relationships from "./Relationships";
 
 function SchemaFrame() {
     const location = useLocation()
@@ -131,6 +132,7 @@ function SchemaFrame() {
                     <Row md='3' className="gy-3">
                         {table_list}
                     </Row>
+                    <Relationships tables={schema.tables}/>
                     <NewTable currentId={currentId} forceReset={forceReset} />
                 </>
             ) : null}

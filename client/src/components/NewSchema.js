@@ -40,7 +40,7 @@ function NewSchema({ setShowNewSchemaForm }) {
                     body: JSON.stringify(newUS)
                 })
                 .then(a => {
-                    setShowNewSchemaForm(false)
+                    setShowNewSchemaForm && setShowNewSchemaForm(false)
                     setNewSchemaName('')
                     history.push('/schema', {id:newSchema.id })
                 })

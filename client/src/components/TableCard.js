@@ -30,7 +30,7 @@ function TableCard({ table }) {
 
     return (
         <Col>
-            <Card>
+            <Card className="shadow">
                 <Card.Body>
                     <Card.Title>
                         {name}

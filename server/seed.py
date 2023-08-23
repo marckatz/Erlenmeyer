@@ -118,7 +118,7 @@ if __name__ == '__main__':
                 table_id=user_table.id
             ),
             Column(
-                name='usename',
+                name='username',
                 column_type='String',
                 is_pk=False,
                 in_repr=True,
