@@ -48,7 +48,7 @@ function SchemaFrame() {
                     }
                 })
         }
-    }, [currentId, reset, user])
+    }, [currentId, reset, user, history])
 
     const table_list = schema && schema.tables.map(table => {
         return <TableCard key={table.id} table={table} />
