@@ -17,7 +17,7 @@ def index():
 
 class Users(Resource):
     def get(self):
-        return make_response([u.to_dict(only=('id','username','schemas.id', 'schemas.name')) for u in User.query.all()])
+        return make_response([u.to_dict(only=('id','username','schemas.id', 'schemas.name')) for u in User.query.all()], 200)
     
     def post(self):
         data = request.get_json()
@@ -132,6 +132,22 @@ class ColumnsById(Resource):
             return make_response({}, 204)
 
 api.add_resource(ColumnsById, '/columns/<int:id>')
+
+class Relationships(Resource):
+    def get(self):
+        return make_response([r.to_dict() for r in Relationship.query.all()], 200)
+    
+    def post(self):
+        data = request.get_json()
+        new_relationship = Relationship(
+            from_many_id = data['from_many_id'],
+            to_one_id = data['to_one_id']
+        )
+        db.session.add(new_relationship)
+        db.session.commit()
+        return make_response(new_relationship.to_dict(), 201)
+
+api.add_resource(Relationships, '/relationships')
 
 @app.route('/login', methods=['POST'])
 def login():

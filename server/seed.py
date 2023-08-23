@@ -138,11 +138,11 @@ if __name__ == '__main__':
 
         print("Done")
 
-        # r1 = Relationship(
-        #     from_many_id=id.id,
-        #     to_one_id=page_id.id
-        # )
-        # db.session.add(r1)
+        r1 = Relationship(
+            from_many_id=page_columns[0].id,
+            to_one_id=edit_columns[2].id
+        )
+        db.session.add(r1)
 
         print("Adding second schema... ", end='')
 
@@ -310,5 +310,6 @@ if __name__ == '__main__':
         ]
         db.session.add_all(user_schemas)
 
+        print("Done")
 
         db.session.commit()
