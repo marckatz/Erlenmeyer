@@ -6,13 +6,14 @@ import TableCard from "./TableCard";
 import NewTable from "./NewTable";
 import NewSchema from "./NewSchema";
 import ShareModal from "./ShareModal";
+import RelationshipForm from "./RelationshipForm";
 
 import Form from "react-bootstrap/Form"
 import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
 import Button from "react-bootstrap/Button"
 import Collapse from 'react-bootstrap/Collapse';
-import RelationshipForm from "./RelationshipForm";
+import Relationships from "./Relationships";
 
 function SchemaFrame() {
     const location = useLocation()
@@ -130,8 +131,9 @@ function SchemaFrame() {
                     <h4 className="ms-4 text-muted">By {displayUsers()}</h4>
                     <hr />
                     <Row md='3' className="gy-3">
-                        {table_list}
+                            {table_list}
                     </Row>
+                    <Relationships schemaId={currentId} />
                     <RelationshipForm tables={schema.tables}/>
                     <NewTable currentId={currentId} forceReset={forceReset} />
                 </>

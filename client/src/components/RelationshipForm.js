@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-function RelationshipForm({ tables }) {
+function RelationshipForm({ tables, forceReset }) {
     const [error, setError] = useState('')
 
     const [selectedTableFrom, setSelectedTableFrom] = useState(0)
@@ -72,7 +72,7 @@ function RelationshipForm({ tables }) {
         })
             .then(r => {
                 if (r.ok) {
-                    r.json().then(rel => console.log(rel))
+                    r.json().then(rel => forceReset())
                 }
                 else if (r.status === 400) {
                     setError('same table somehow')
@@ -93,18 +93,12 @@ function RelationshipForm({ tables }) {
                             <option value={0} disabled>Select Table</option>
                             {tableFromOptions}
                         </Form.Select>
-                        <Form.Control.Feedback type='invalid' tooltip>
-                            {error}
-                        </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group as={Col} controlId='tableTo'>
                         <Form.Select onChange={handleTableToChange} value={selectedTableTo} isInvalid={!!error}>
                             <option value={0} disabled>Select Table</option>
                             {tableToOptions}
                         </Form.Select>
-                        <Form.Control.Feedback type='invalid' tooltip>
-                            {error}
-                        </Form.Control.Feedback>
                     </Form.Group>
                 </Row>
                 <Row>

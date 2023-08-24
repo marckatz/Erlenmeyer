@@ -30,7 +30,7 @@ function TableCard({ table }) {
 
     return (
         <Col>
-            <Card className="shadow">
+            <Card className="shadow" style={{height:'100%'}}>
                 <Card.Body>
                     <Card.Title>
                         {name}
