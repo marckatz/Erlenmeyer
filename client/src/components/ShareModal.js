@@ -1,8 +1,10 @@
 import React, { useContext, useState } from 'react'
+
+import { UserContext } from '../context/user'
+
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
-import { UserContext } from '../context/user'
 
 function ShareModal({ schemaId, reset }) {
     const [show, setShow] = useState(false)

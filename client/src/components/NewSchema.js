@@ -1,11 +1,13 @@
 import React, { useContext, useState } from "react";
+import { useHistory } from "react-router-dom";
+
 import { UserContext } from "../context/user";
+
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import FloatingLabel from 'react-bootstrap/FloatingLabel'
-import { useHistory } from "react-router-dom";
 
 function NewSchema({ setShowNewSchemaForm }) {
     const history = useHistory()

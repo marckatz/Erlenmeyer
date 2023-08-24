@@ -1,10 +1,12 @@
 import React from "react";
+
+import * as yup from 'yup'
+import { useFormik } from "formik";
+
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import * as yup from 'yup'
-import { useFormik } from "formik";
 
 function NewTable({ currentId, forceReset }) {
 

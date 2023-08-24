@@ -1,8 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
+
 import { UserContext } from '../context/user'
+
 import SchemaCard from './SchemaCard'
-import Row from "react-bootstrap/Row"
+
 import NewSchema from './NewSchema'
+import Row from "react-bootstrap/Row"
 
 function Profile() {
     const { user } = useContext(UserContext)

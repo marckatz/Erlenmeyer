@@ -1,12 +1,15 @@
 import React, { useState } from "react";
+
 import ColumnCard from "./ColumnCard";
 import NewColumn from "./NewColumn";
+
+import '../TableCard.css'
+
 import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from "react-bootstrap/Button"
 import Collapse from 'react-bootstrap/Collapse';
-import '../TableCard.css'
 
 function TableCard({ table }) {
     const { id, name } = table
