@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-function RelationshipForm({ tables, forceReset }) {
+function RelationshipForm({ tables, setRelationships }) {
     const [error, setError] = useState('')
 
     const [selectedTableFrom, setSelectedTableFrom] = useState(0)
@@ -73,7 +73,7 @@ function RelationshipForm({ tables, forceReset }) {
         })
             .then(r => {
                 if (r.ok) {
-                    r.json().then(rel => forceReset())
+                    r.json().then(rel => setRelationships(rels => [...rels, rel]))
                 }
                 else if (r.status === 400) {
                     setError('same table somehow')

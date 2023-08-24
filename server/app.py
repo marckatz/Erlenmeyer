@@ -158,6 +158,18 @@ class Relationships(Resource):
 
 api.add_resource(Relationships, '/relationships')
 
+class RelationshipsById(Resource):
+    def delete(self, id):
+        relationship = Relationship.query.filter_by(id=id).first()
+        if not relationship:
+            return make_response({'error':'relationship not found'}, 404)
+        else:
+            db.session.delete(relationship)
+            db.session.commit()
+            return make_response({}, 204)
+        
+api.add_resource(RelationshipsById, '/relationships/<int:id>')
+
 @app.route('/login', methods=['POST'])
 def login():
     data = request.get_json()

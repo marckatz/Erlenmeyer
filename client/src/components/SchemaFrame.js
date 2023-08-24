@@ -6,7 +6,6 @@ import TableCard from "./TableCard";
 import NewTable from "./NewTable";
 import NewSchema from "./NewSchema";
 import ShareModal from "./ShareModal";
-import RelationshipForm from "./RelationshipForm";
 
 import Form from "react-bootstrap/Form"
 import Row from "react-bootstrap/Row"
@@ -133,8 +132,7 @@ function SchemaFrame() {
                     <Row md='3' className="gy-3">
                             {table_list}
                     </Row>
-                    <Relationships schemaId={currentId} />
-                    <RelationshipForm tables={schema.tables}/>
+                    <Relationships schemaId={currentId} tables={schema.tables}/>
                     <NewTable currentId={currentId} forceReset={forceReset} />
                 </>
             ) : null}
