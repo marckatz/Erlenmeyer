@@ -50,7 +50,7 @@ function NewSchema({ setShowNewSchemaForm }) {
     }
 
     return (
-        <Form className="mt-3" noValidate onSubmit={handleNewSchema}>
+        <Form noValidate onSubmit={handleNewSchema}>
             <Form.Group as={Row} className="align-items-center position-relative" controlId="formSchemaName">
                 <Col sm='10'>
                     <Row>

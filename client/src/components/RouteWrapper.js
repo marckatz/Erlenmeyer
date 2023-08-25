@@ -9,9 +9,12 @@ import SchemaFrame from './SchemaFrame';
 import Profile from './Profile'
 import UserlessSchemaFrame from './UserlessSchemaFrame';
 import NotFound from "./NotFound";
+import ColumnContextMenu from "./ColumnContextMenu";
+import { MenuContext } from "../context/menu";
 
 function RouteWrapper() {
     const { user, setUser } = useContext(UserContext)
+    const {setShowMenu} = useContext(MenuContext)
 
     useEffect(() => {
         fetch('/check_session')
@@ -30,9 +33,11 @@ function RouteWrapper() {
                 {user && <Route path='/schema' component={SchemaFrame} />}
                 {!user && <Route path='/schema' component={UserlessSchemaFrame} />}
                 <Route path='/profile' component={Profile} />
-                <Route path='notfound' component={NotFound} />
+                <Route path='/test' component={UserlessSchemaFrame} />
+                <Route path='/notfound' component={NotFound} />
                 <Route path='*' component={NotFound} />
             </Switch>
+            <ColumnContextMenu />
         </Router>
     )
 

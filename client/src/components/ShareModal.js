@@ -6,6 +6,9 @@ import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faShareFromSquare } from '@fortawesome/free-solid-svg-icons'
+
 function ShareModal({ schemaId, reset }) {
     const [show, setShow] = useState(false)
     const { user } = useContext(UserContext)
@@ -65,7 +68,9 @@ function ShareModal({ schemaId, reset }) {
 
     return (
         <>
-            <Button variant='outline-primary' onClick={handleShow}>Share</Button>
+            <Button variant='primary' onClick={handleShow}>
+                <FontAwesomeIcon icon={faShareFromSquare} /> Share
+            </Button>
             <Modal
                 show={show}
                 onHide={handleClose}

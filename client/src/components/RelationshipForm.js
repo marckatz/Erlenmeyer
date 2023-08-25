@@ -4,17 +4,26 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Collapse from 'react-bootstrap/Collapse'
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
 function RelationshipForm({ tables, setRelationships }) {
     const [error, setError] = useState('')
+    const [show, setShow] = useState(false)
+
+    const [columnsFrom, setColumnsFrom] = useState([])
+    const [columnsTo, setColumnsTo] = useState([])
 
     const [selectedTableFrom, setSelectedTableFrom] = useState(0)
     const [selectedColumnFrom, setSelectedColumnFrom] = useState(0)
-    const [columnsFrom, setColumnsFrom] = useState([])
 
     const [selectedTableTo, setSelectedTableTo] = useState(0)
     const [selectedColumnTo, setSelectedColumnTo] = useState(0)
-    const [columnsTo, setColumnsTo] = useState([])
 
     useEffect(() => {
         const currentTable = tables.find(table => table.id === parseInt(selectedTableFrom))
@@ -87,36 +96,46 @@ function RelationshipForm({ tables, setRelationships }) {
 
     return (
         <>
+        <Collapse in={show}>
+            <div id='columnForm'>
             <Form onSubmit={handleSubmit}>
                 <Row>
                     <Form.Group as={Col} controlId='tableFrom'>
-                        <Form.Select onChange={handleTableFromChange} value={selectedTableFrom} isInvalid={!!error}>
-                            <option value={0} disabled>Select Table</option>
-                            {tableFromOptions}
-                        </Form.Select>
+                        <FloatingLabel label="Table">
+                            <Form.Select onChange={handleTableFromChange} value={selectedTableFrom} isInvalid={!!error}>
+                                <option value={0} disabled>Select Table</option>
+                                {tableFromOptions}
+                            </Form.Select>
+                        </FloatingLabel>
                     </Form.Group>
                     <Form.Group as={Col} controlId='tableTo'>
-                        <Form.Select onChange={handleTableToChange} value={selectedTableTo} isInvalid={!!error}>
-                            <option value={0} disabled>Select Table</option>
-                            {tableToOptions}
-                        </Form.Select>
+                        <FloatingLabel label="Table">
+                            <Form.Select onChange={handleTableToChange} value={selectedTableTo} isInvalid={!!error}>
+                                <option value={0} disabled>Select Table</option>
+                                {tableToOptions}
+                            </Form.Select>
+                        </FloatingLabel>
                     </Form.Group>
                 </Row>
                 <Row>
                     <Form.Group as={Col} controlId='columnFrom' className='position-relative'>
-                        <Form.Select disabled={selectedTableFrom === 0} onChange={handleColumnFromChange} value={selectedColumnFrom} isInvalid={!!error}> 
+                        <FloatingLabel label="Column">
+                        <Form.Select disabled={selectedTableFrom === 0} onChange={handleColumnFromChange} value={selectedColumnFrom} isInvalid={!!error}>
                             <option value={0} disabled>Select Column</option>
                             {columnFromOptions}
                         </Form.Select>
+                        </FloatingLabel>
                         <Form.Control.Feedback type='invalid' tooltip>
                             {error}
                         </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group as={Col} controlId='columnTo' className='position-relative'>
+                        <FloatingLabel label="Column">
                         <Form.Select disabled={selectedTableTo === 0} onChange={handleColumnToChange} value={selectedColumnTo} isInvalid={!!error}>
                             <option value={0} disabled>Select Column</option>
                             {columnToOptions}
                         </Form.Select>
+                        </FloatingLabel>
                         <Form.Control.Feedback type='invalid' tooltip>
                             {error}
                         </Form.Control.Feedback>
@@ -124,6 +143,23 @@ function RelationshipForm({ tables, setRelationships }) {
                 </Row>
                 <Button type='submit' disabled={!(selectedColumnFrom && selectedTableFrom && selectedColumnTo && selectedTableTo)}>Submit</Button>
             </Form>
+                </div>
+            </Collapse>
+            <Button
+                onClick={() => {
+                    setShow(!show)
+                    setSelectedTableTo(0)
+                    setSelectedColumnTo(0)
+                    setSelectedTableFrom(0)
+                    setSelectedColumnFrom(0)
+                }}
+                aria-controls="columnForm"
+                aria-expanded={show}
+                className="my-1 py-0 px-1"
+                title={show?'Close':'New Relationship'}
+                variant={show ? "warning" : "success"}>
+                {show ? <FontAwesomeIcon icon={faXmark} /> : <FontAwesomeIcon icon={faPlus} />}
+            </Button>
         </>
     )
 }

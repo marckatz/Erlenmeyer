@@ -14,6 +14,9 @@ import Button from "react-bootstrap/Button"
 import Collapse from 'react-bootstrap/Collapse';
 import Relationships from "./Relationships";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faDownload } from '@fortawesome/free-solid-svg-icons'
+
 function SchemaFrame() {
     const location = useLocation()
     const history = useHistory()
@@ -43,7 +46,7 @@ function SchemaFrame() {
                             setSchema(s)
                         })
                     }
-                    else{
+                    else {
                         history.push('/notfound')
                     }
                 })
@@ -87,7 +90,7 @@ function SchemaFrame() {
 
     function handleSchemaChange(e) {
         setShowNewSchemaForm(false)
-        history.replace('/schema', {id:e.target.value })
+        history.replace('/schema', { id: e.target.value })
     }
 
     return (
@@ -124,16 +127,28 @@ function SchemaFrame() {
                 <>
                     <Row className="align-items-center">
                         <Col md='auto'><h1>{schema.name}</h1></Col>
-                        <Col md='auto'><Button variant="outline-primary" onClick={handleExport}>Export</Button></Col>
+                        <Col md='auto'>
+                            <Button variant="primary" onClick={handleExport}>
+                                <FontAwesomeIcon icon={faDownload} /> Export
+                            </Button>
+                        </Col>
                         <Col md='auto'><ShareModal schemaId={currentId} reset={forceReset} /></Col>
                     </Row>
                     <h4 className="ms-4 text-muted">By {displayUsers()}</h4>
                     <hr />
-                    <Row md='3' className="gy-3">
-                            {table_list}
+                    <Row>
+                        <Col sm='8'>
+                            <h2>Tables</h2>
+                            <Row className="gy-3">
+                                {table_list}
+                            </Row>
+                            <NewTable currentId={currentId} forceReset={forceReset} />
+                        </Col>
+                        <Col sm='4'>
+                            <h2>Relationships</h2>
+                            <Relationships schemaId={currentId} tables={schema.tables} />
+                        </Col>
                     </Row>
-                    <Relationships schemaId={currentId} tables={schema.tables}/>
-                    <NewTable currentId={currentId} forceReset={forceReset} />
                 </>
             ) : null}
         </div>
