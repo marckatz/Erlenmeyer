@@ -1,5 +1,7 @@
 import React from "react";
+
 import logo from "../erlogo.png"
+
 import "../Home.css"
 
 function Home() {

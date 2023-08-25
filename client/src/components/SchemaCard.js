@@ -1,7 +1,8 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
+
 import Card from 'react-bootstrap/Card'
 import Col from "react-bootstrap/Col"
-import { Link } from 'react-router-dom'
 
 function SchemaCard({ schema }) {
     const { id, name, users, tables } = schema
@@ -24,7 +25,7 @@ function SchemaCard({ schema }) {
 
     return (
         <Col>
-            <Card>
+            <Card className='shadow'>
                 <Card.Body>
                     <Link to={{ pathname: '/schema', state: { id } }} style={{ textDecoration: 'none' }}><Card.Title>{name}</Card.Title></Link>
                     <Card.Subtitle className='mb-2 text-muted text-truncate'>

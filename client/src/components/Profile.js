@@ -1,6 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
+
 import { UserContext } from '../context/user'
+
 import SchemaCard from './SchemaCard'
+
+import NewSchema from './NewSchema'
 import Row from "react-bootstrap/Row"
 
 function Profile() {
@@ -23,6 +27,7 @@ function Profile() {
         <div className="mx-5 my-2">
             <h1>{user.username}'s Profile</h1>
             <hr />
+            <NewSchema />
             <h2>Schemas:</h2>
             <Row md='5'>
                 {schemaCards}

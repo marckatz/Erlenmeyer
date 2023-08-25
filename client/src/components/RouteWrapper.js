@@ -1,12 +1,14 @@
 import React, { useContext, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
 import { UserContext } from "../context/user";
-import SchemaFrame from './SchemaFrame';
+
 import Navbar from './Navbar';
 import Home from './Home';
+import SchemaFrame from './SchemaFrame';
+import Profile from './Profile'
 import UserlessSchemaFrame from './UserlessSchemaFrame';
 import NotFound from "./NotFound";
-import Profile from './Profile'
 
 function RouteWrapper() {
     const { user, setUser } = useContext(UserContext)
@@ -28,6 +30,7 @@ function RouteWrapper() {
                 {user && <Route path='/schema' component={SchemaFrame} />}
                 {!user && <Route path='/schema' component={UserlessSchemaFrame} />}
                 <Route path='/profile' component={Profile} />
+                <Route path='notfound' component={NotFound} />
                 <Route path='*' component={NotFound} />
             </Switch>
         </Router>

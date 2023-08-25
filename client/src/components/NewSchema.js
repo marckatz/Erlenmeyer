@@ -1,12 +1,16 @@
 import React, { useContext, useState } from "react";
+import { useHistory } from "react-router-dom";
+
 import { UserContext } from "../context/user";
+
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import FloatingLabel from 'react-bootstrap/FloatingLabel'
 
-function NewSchema({ forceReset, setCurrentId, setShowNewSchemaForm }) {
+function NewSchema({ setShowNewSchemaForm }) {
+    const history = useHistory()
     const [newSchemaName, setNewSchemaName] = useState('')
     const [isNotValid, setIsNotValid] = useState(false)
     const { user } = useContext(UserContext)
@@ -37,12 +41,11 @@ function NewSchema({ forceReset, setCurrentId, setShowNewSchemaForm }) {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(newUS)
                 })
-            })
-            .then(a => {
-                setCurrentId(newSchema.id)
-                setNewSchemaName('')
-                setShowNewSchemaForm(false)
-                forceReset()
+                .then(a => {
+                    setShowNewSchemaForm && setShowNewSchemaForm(false)
+                    setNewSchemaName('')
+                    history.push('/schema', {id:newSchema.id })
+                })
             })
     }
 

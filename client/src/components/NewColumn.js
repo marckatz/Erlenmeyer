@@ -1,10 +1,12 @@
 import React from "react";
+
+import * as yup from 'yup'
+import { useFormik } from "formik";
+
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import * as yup from 'yup'
-import { useFormik } from "formik";
 
 function NewColumn({ tableId, setColumns }) {
     const COLUMN_TYPES = ['Integer', 'String', 'Text', 'DateTime', 'Float', 'Boolean', 'PickleType', 'LargeBinary']
@@ -62,7 +64,11 @@ function NewColumn({ tableId, setColumns }) {
                 </Col>
                 <Col style={{ flexBasis: '35%' }}>
                     <Form.Group controlId="formTableType" className="position-relative">
-                        <Form.Select onChange={e => formik.handleChange(e)} value={formik.values.colType} name='colType' isInvalid={!!formik.errors.colType}>
+                        <Form.Select 
+                            onChange={e => formik.handleChange(e)} 
+                            value={formik.values.colType} name='colType' 
+                            isInvalid={!!formik.errors.colType}
+                        >
                             <option disabled value={0}>Type</option>
                             {COLUMN_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
                         </Form.Select>

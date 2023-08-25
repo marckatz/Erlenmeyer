@@ -1,15 +1,18 @@
 import React, { useContext } from "react";
+import { LinkContainer } from 'react-router-bootstrap'
+import { Link, useHistory } from "react-router-dom";
+
 import { UserContext } from "../context/user";
-import logo from "../erlogo.png"
 import Login from "./Login";
 import Signup from "./Signup";
+
+import logo from "../erlogo.png"
+import '../Home.css'
+
 import { Navbar as BNavbar } from 'react-bootstrap'
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button'
-import { LinkContainer } from 'react-router-bootstrap'
-import { Link, useHistory } from "react-router-dom";
-import '../Home.css'
 
 function Navbar() {
     const { user, setUser } = useContext(UserContext)

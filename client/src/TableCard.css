@@ -3,3 +3,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.table-card.tc2{
+    flex: 0 0 auto !important;
+    /* border: none; */
+    outline: 2px solid red;
+    padding:0 1rem;
+}

@@ -17,7 +17,7 @@ def index():
 
 class Users(Resource):
     def get(self):
-        return make_response([u.to_dict(only=('id','username','schemas.id', 'schemas.name')) for u in User.query.all()])
+        return make_response([u.to_dict(only=('id','username','schemas.id', 'schemas.name')) for u in User.query.all()], 200)
     
     def post(self):
         data = request.get_json()
@@ -133,6 +133,43 @@ class ColumnsById(Resource):
 
 api.add_resource(ColumnsById, '/columns/<int:id>')
 
+class Relationships(Resource):
+    def get(self):
+        return make_response([r.to_dict() for r in Relationship.query.all()], 200)
+    
+    def post(self):
+        data = request.get_json()
+        from_many_id = data['from_many_id']
+        to_one_id = data['to_one_id']
+        from_column = Column.query.filter_by(id=from_many_id).first()
+        to_column = Column.query.filter_by(id=to_one_id).first()
+        if from_column.table.id == to_column.table.id:
+            return make_response({'error':'Columns cannot belong to the same table'}, 400)
+        try:
+            new_relationship = Relationship(
+                from_many_id = from_many_id,
+                to_one_id = to_one_id
+            )
+            db.session.add(new_relationship)
+            db.session.commit()
+            return make_response(new_relationship.to_dict(), 201)
+        except IntegrityError as e:
+            return make_response({'error':'Relationship already exists'}, 409)
+
+api.add_resource(Relationships, '/relationships')
+
+class RelationshipsById(Resource):
+    def delete(self, id):
+        relationship = Relationship.query.filter_by(id=id).first()
+        if not relationship:
+            return make_response({'error':'relationship not found'}, 404)
+        else:
+            db.session.delete(relationship)
+            db.session.commit()
+            return make_response({}, 204)
+        
+api.add_resource(RelationshipsById, '/relationships/<int:id>')
+
 @app.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
@@ -180,6 +217,11 @@ def userByUsername(username):
         return make_response(user.to_dict(only=('id','username','schemas.id', 'schemas.name')), 200)
     else:
         return make_response({'error':'User not found'}, 404)
+
+@app.route('/relationships/schema/<int:schema_id>')
+def relationshipsBySchemaId(schema_id):
+    relationships = [r.to_dict() for r in Relationship.query.join(Relationship.from_many).join(Column.table).filter_by(schema_id=schema_id).all()]
+    return make_response(relationships, 200)
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

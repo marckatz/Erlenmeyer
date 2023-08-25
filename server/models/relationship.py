@@ -9,6 +9,8 @@ class Relationship(db.Model, SerializerMixin):
     from_many_id = db.Column(db.Integer, db.ForeignKey('columns.id'))
     to_one_id = db.Column(db.Integer, db.ForeignKey('columns.id'))
 
+    __table_args__ = ( db.UniqueConstraint(from_many_id, to_one_id), )
+
     from_many = db.relationship('Column', foreign_keys=[from_many_id], back_populates='from_many_relationships')
     to_one = db.relationship('Column', foreign_keys=[to_one_id], back_populates='to_one_relationships')
 

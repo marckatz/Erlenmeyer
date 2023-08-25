@@ -1,15 +1,18 @@
 import React, { useState } from "react";
+
+import * as yup from 'yup'
+import { useFormik } from "formik";
+
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import * as yup from 'yup'
-import { useFormik } from "formik";
 
 function ColumnCard({ column, handleDelete }) {
     const { id, column_type } = column
     const [name, setName] = useState(column.name)
     const [beingEdited, setBeingEdited] = useState(false)
+
     const formSchema = yup.object().shape({
         newName: yup.string().required("Must enter a column name").max(30, 'Column name must have at most 30 characters').matches(/^[A-Za-z][\w]*$/, 'Invalid column name'),
     })
@@ -32,9 +35,19 @@ function ColumnCard({ column, handleDelete }) {
                 .then(data => {
                     setName(values.newName)
                     setBeingEdited(false)
+                    formik.resetForm({
+                        values:{
+                            newName:values.newName
+                        }
+                    })
                 })
         }
     })
+
+    function toggleEdited(){
+        setBeingEdited(e => !e)
+        formik.resetForm()
+    }
 
     return (
         <>
@@ -46,6 +59,7 @@ function ColumnCard({ column, handleDelete }) {
                                 type="text"
                                 name='newName'
                                 placeholder={formik.values.newName}
+                                value={formik.values.newName}
                                 onChange={e => { formik.handleChange(e) }}
                                 className="py-0 ps-1 border-top-0 border-bottom-0"
                                 isInvalid={!!formik.errors.newName} />
@@ -56,11 +70,11 @@ function ColumnCard({ column, handleDelete }) {
                     <Col className="table-col border-end align-items-center d-flex" style={{ flexBasis: '35%' }}>{column_type}</Col>
                     <Col className="table-col align-items-center d-flex justify-content-center" style={{ flexBasis: '20%' }}>
                         <Button
-                            onClick={() => setBeingEdited(e => !e)}
+                            onClick={toggleEdited}
                             className="py-0 px-1"
                             style={{ margin: '1px 0' }}
                             variant={beingEdited ? "outline-warning" : "outline-primary"}>
-                            {beingEdited ? 'Close' : 'Edit'}
+                            {beingEdited ? 'Cancel' : 'Edit'}
                         </Button>
                     </Col>
                     <Col className="table-col align-items-center d-flex justify-content-center" style={{ flexBasis: '20%' }}>

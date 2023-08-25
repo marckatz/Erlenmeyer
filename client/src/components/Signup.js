@@ -1,8 +1,11 @@
 import React, { useContext, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+
 import { useFormik } from "formik";
 import * as yup from "yup";
+
 import { UserContext } from '../context/user';
-import { useHistory } from 'react-router-dom';
+
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
