@@ -10,17 +10,13 @@ import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from "react-bootstrap/Button"
-import Collapse from 'react-bootstrap/Collapse';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
 function TableCard({ table }) {
     const { id, name } = table
     const [columns, setColumns] = useState(table.columns)
-    const [show, setShow] = useState(false)
 
     function handleDelete(columnId) {
         fetch(`/columns/${columnId}`, {
@@ -58,23 +54,7 @@ function TableCard({ table }) {
                         </Col>
                     </Row>
                     {create_rows}
-                    <Collapse in={show}>
-                        <div id='columnForm'>
-                            <NewColumn setColumns={setColumns} tableId={id} />
-                        </div>
-                    </Collapse>
-                    <Row>
-                        <Col xs='auto'>
-                            <Button
-                                onClick={() => setShow(!show)}
-                                aria-controls="columnForm"
-                                aria-expanded={show}
-                                className="my-1 py-0 px-1"
-                                variant={show ? "warning" : "success"}>
-                                {show ? <FontAwesomeIcon icon={faXmark} /> : <FontAwesomeIcon icon={faPlus} />}
-                            </Button>
-                        </Col>
-                    </Row>
+                    <NewColumn setColumns={setColumns} tableId={id} />
                 </Card.Body>
             </Card>
         </Col>

@@ -127,12 +127,12 @@ function SchemaFrame() {
                 <>
                     <Row className="align-items-center">
                         <Col md='auto'><h1>{schema.name}</h1></Col>
+                        <Col md='auto'><ShareModal schemaId={currentId} reset={forceReset} /></Col>
                         <Col md='auto'>
                             <Button variant="primary" onClick={handleExport}>
                                 <FontAwesomeIcon icon={faDownload} /> Export
                             </Button>
                         </Col>
-                        <Col md='auto'><ShareModal schemaId={currentId} reset={forceReset} /></Col>
                     </Row>
                     <h4 className="ms-4 text-muted">By {displayUsers()}</h4>
                     <hr />
