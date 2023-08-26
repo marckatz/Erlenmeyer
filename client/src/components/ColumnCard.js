@@ -9,10 +9,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPenToSquare } from '@fortawesome/free-solid-svg-icons'
-import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
-import { faBan } from '@fortawesome/free-solid-svg-icons'
-import { faShareFromSquare } from '@fortawesome/free-solid-svg-icons'
+import { faPenToSquare, faTrashCan, faBan, faShareFromSquare } from '@fortawesome/free-solid-svg-icons'
 
 function ColumnCard({ column, handleDelete }) {
     const { id, column_type } = column

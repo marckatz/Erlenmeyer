@@ -1,9 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import * as yup from 'yup'
 import { useFormik } from "formik";
-
-import ColumnContextMenu from './ColumnContextMenu'
 
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
@@ -14,13 +12,10 @@ import ListGroup from 'react-bootstrap/ListGroup'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashCan, faArrowUpRightFromSquare, faKey } from '@fortawesome/free-solid-svg-icons'
 
-import { MenuContext } from "../context/menu";
-
 import '../column.css'
 
 function ColumnCard2({ column, handleDelete }) {
     const { id, column_type, is_pk, in_repr } = column
-    // const { setShowMenu, setXPos, setYPos, setHandleUpdate, setCurrentPK, setCurrentRepr } = useContext(MenuContext)
     const [showMenu, setShowMenu] = useState(false)
     const [menuX, setMenuX] = useState(0)
     const [menuY, setMenuY] = useState(0)
@@ -31,8 +26,8 @@ function ColumnCard2({ column, handleDelete }) {
     const [beingEdited, setBeingEdited] = useState(false)
 
     useEffect(() => {
-        document.addEventListener('click', ()=>setShowMenu(false) )
-        document.addEventListener('contextmenu', ()=>setShowMenu(false) )
+        document.addEventListener('click', () => setShowMenu(false))
+        document.addEventListener('contextmenu', () => setShowMenu(false))
     })
 
     const formSchema = yup.object().shape({
@@ -77,19 +72,6 @@ function ColumnCard2({ column, handleDelete }) {
         e.stopPropagation()
     }
 
-    function handleUpdate(newPK, newRepr) {
-        fetch(`/columns/${id}`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ is_pk: newPK, in_repr: newRepr })
-        })
-            .then(r => r.json())
-            .then(newCol => {
-                setPK(newCol.is_pk)
-                setInRepr(newCol.in_repr)
-            })
-    }
-
     function handleRightClick(e) {
         e.preventDefault()
         setMenuX(e.pageX - e.target.getBoundingClientRect().left)
@@ -107,12 +89,26 @@ function ColumnCard2({ column, handleDelete }) {
     }
 
     function handlePK(e) {
-        // handleUpdate(!currentPK, currentRepr)
-        setPK(pk => !pk)
+        fetch(`/columns/${id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ is_pk: !isPK })
+        })
+            .then(r => r.json())
+            .then(newCol => {
+                setPK(newCol.is_pk)
+            })
     }
     function handleRepr(e) {
-        // handleUpdate(currentPK, !currentRepr)
-        setInRepr(repr => !repr)
+        fetch(`/columns/${id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ in_repr: !inRepr })
+        })
+            .then(r => r.json())
+            .then(newCol => {
+                setInRepr(newCol.in_repr)
+            })
     }
 
     return (
@@ -169,10 +165,10 @@ function ColumnCard2({ column, handleDelete }) {
                     }}>
                         <ListGroup>
                             <ListGroup.Item action onClick={handlePK}>
-                                {isPK?'Remove primary key':'Make primary key'}
+                                {isPK ? 'Remove primary key' : 'Make primary key'}
                             </ListGroup.Item>
                             <ListGroup.Item action onClick={handleRepr}>
-                                {inRepr?'Remove from repr':'Add to repr'}
+                                {inRepr ? 'Remove from repr' : 'Add to repr'}
                             </ListGroup.Item>
                         </ListGroup>
                     </div>

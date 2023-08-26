@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import ColumnCard from "./ColumnCard";
+// import ColumnCard from "./ColumnCard";
 import ColumnCard2 from "./ColumnCard2";
 import NewColumn from "./NewColumn";
 

@@ -10,9 +10,7 @@ import Col from 'react-bootstrap/Col'
 import Collapse from 'react-bootstrap/Collapse'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import { faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faXmark } from '@fortawesome/free-solid-svg-icons'
 
 function NewColumn({ tableId, setColumns }) {
     const COLUMN_TYPES = ['Integer', 'String', 'Text', 'DateTime', 'Float', 'Boolean', 'PickleType', 'LargeBinary']
@@ -104,7 +102,7 @@ function NewColumn({ tableId, setColumns }) {
                                     type="submit"
                                     variant="outline-success"
                                     title="Submit">
-                                    <FontAwesomeIcon className='fa-fw' icon={faArrowUpRightFromSquare} />
+                                    <FontAwesomeIcon className='fa-fw' icon={faPlus} />
                                 </Button>
                             </Col>
                         </Row>

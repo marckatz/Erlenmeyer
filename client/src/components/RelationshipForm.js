@@ -7,7 +7,6 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faXmark, faAngleRight } from '@fortawesome/free-solid-svg-icons'
-import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons'
 
 function RelationshipForm({ tables, setRelationships }) {
     const [error, setError] = useState('')
