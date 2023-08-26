@@ -18,7 +18,7 @@ function NewColumn({ tableId, setColumns }) {
     const [show, setShow] = useState(false)
 
     const formSchema = yup.object().shape({
-        name: yup.string().required("Must enter a column name").max(30, 'Column name must have at most 30 characters').matches(/^[A-Za-z][\w]*$/, 'Invalid column name'),
+        name: yup.string().required("Must enter a column name").max(30, 'Column name must have at most 30 characters').matches(/^[A-Za-z_][\w]*$/, 'Invalid column name'),
         colType: yup.string().matches(/^(?:Integer|String|Text|DateTime|Float|Boolean|PickleType|LargeBinary)$/, "Must select a type")
     })
 
@@ -45,6 +45,7 @@ function NewColumn({ tableId, setColumns }) {
                 .then(data => {
                     setColumns(c => [...c, data])
                     formik.resetForm()
+                    setShow(false)
                 })
         }
     })

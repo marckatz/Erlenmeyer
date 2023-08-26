@@ -30,7 +30,6 @@ function RouteWrapper() {
                 {user && <Route path='/schema' component={SchemaFrame} />}
                 {!user && <Route path='/schema' component={UserlessSchemaFrame} />}
                 <Route path='/profile' component={Profile} />
-                <Route path='/test' component={UserlessSchemaFrame} />
                 <Route path='/notfound' component={NotFound} />
                 <Route path='*' component={NotFound} />
             </Switch>

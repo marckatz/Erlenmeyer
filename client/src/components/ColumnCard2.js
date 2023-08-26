@@ -31,7 +31,7 @@ function ColumnCard2({ column, handleDelete }) {
     })
 
     const formSchema = yup.object().shape({
-        newName: yup.string().required("Must enter a column name").max(30, 'Column name must have at most 30 characters').matches(/^[A-Za-z][\w]*$/, 'Invalid column name'),
+        newName: yup.string().required("Must enter a column name").max(30, 'Column name must have at most 30 characters').matches(/^[A-Za-z_][\w]*$/, 'Invalid column name'),
     })
 
     const formik = useFormik({
@@ -116,7 +116,7 @@ function ColumnCard2({ column, handleDelete }) {
             <Row className="border border-top-0 mx-0 align-items-center column-row" id={`col${id}`} onContextMenu={handleRightClick} style={{ position: 'relative' }}>
                 <Col className="text-start" style={{ cursor: 'text' }} onClick={toggleEdited}>
                     {beingEdited ? (
-                        <Form onSubmit={formik.handleSubmit}>
+                        <Form onSubmit={formik.handleSubmit} id='editCol'>
                             <Form.Control
                                 type="text"
                                 name='newName'
@@ -143,7 +143,9 @@ function ColumnCard2({ column, handleDelete }) {
                             className="py-0 px-1"
                             style={{ margin: '1px 0' }}
                             type="submit"
+                            onClick={formik.handleSubmit}
                             variant="outline-success"
+                            form='editCol'
                             title="Submit">
                             <FontAwesomeIcon className='fa-fw' icon={faArrowUpRightFromSquare} />
                         </Button>
