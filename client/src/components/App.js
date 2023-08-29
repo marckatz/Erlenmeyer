@@ -1,3 +1,4 @@
+import { MenuProvider } from '../context/menu';
 import { UserProvider } from '../context/user';
 
 import RouteWrapper from './RouteWrapper';
@@ -5,8 +6,10 @@ import RouteWrapper from './RouteWrapper';
 function App() {
   return (
     <UserProvider>
-      <RouteWrapper />
-    </UserProvider>
+      <MenuProvider>
+        <RouteWrapper />
+      </MenuProvider>
+    </UserProvider> 
   );
 }
 

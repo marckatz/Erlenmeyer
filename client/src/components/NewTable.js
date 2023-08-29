@@ -8,6 +8,9 @@ import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
+
 function NewTable({ currentId, forceReset }) {
 
     const formSchema = yup.object().shape({
@@ -39,13 +42,13 @@ function NewTable({ currentId, forceReset }) {
 
     return (
         <Form className="d-flex mt-3" noValidate onSubmit={formik.handleSubmit}>
-            <Row style={{ width: '33.333333%' }} className="justify-content-between">
+            <Row className="justify-content-between gx-2">
                 <Col >
                     <Form.Group controlId="formTable" className="position-relative">
                         <Form.Control
                             type="text"
                             className="form-control"
-                            placeholder="Table Name"
+                            placeholder="New Table"
                             name="name"
                             value={formik.values.name}
                             onChange={e => { formik.handleChange(e) }}
@@ -56,7 +59,7 @@ function NewTable({ currentId, forceReset }) {
                     </Form.Group>
                 </Col>
                 <Col xs='auto'>
-                    <Button type="submit" variant="outline-primary">Submit</Button>
+                    <Button type="submit" variant="success"><FontAwesomeIcon icon={faPlus} /> Add</Button>
                 </Col>
             </Row>
         </Form>

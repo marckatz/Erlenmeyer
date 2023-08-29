@@ -8,6 +8,9 @@ import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPenToSquare, faTrashCan, faBan, faShareFromSquare } from '@fortawesome/free-solid-svg-icons'
+
 function ColumnCard({ column, handleDelete }) {
     const { id, column_type } = column
     const [name, setName] = useState(column.name)
@@ -52,8 +55,8 @@ function ColumnCard({ column, handleDelete }) {
     return (
         <>
             <Form onSubmit={formik.handleSubmit}>
-                <Row className="border border-top-0 mx-0">
-                    <Col className="table-col border-end align-items-center d-flex" style={{ flexBasis: '25%' }}>
+                <Row className="border border-top-0 mx-0 gx-1">
+                    <Col className="table-col border-end align-items-center d-flex" >
                         {beingEdited ? (
                             <Form.Control
                                 type="text"
@@ -67,32 +70,35 @@ function ColumnCard({ column, handleDelete }) {
                             name
                         )}
                     </Col>
-                    <Col className="table-col border-end align-items-center d-flex" style={{ flexBasis: '35%' }}>{column_type}</Col>
-                    <Col className="table-col align-items-center d-flex justify-content-center" style={{ flexBasis: '20%' }}>
+                    <Col className="table-col border-end align-items-center d-flex" xs='auto'>{column_type}</Col>
+                    <Col className="table-col align-items-center d-flex justify-content-center" xs='auto'>
                         <Button
                             onClick={toggleEdited}
                             className="py-0 px-1"
                             style={{ margin: '1px 0' }}
-                            variant={beingEdited ? "outline-warning" : "outline-primary"}>
-                            {beingEdited ? 'Cancel' : 'Edit'}
+                            variant={beingEdited ? "outline-warning" : "outline-primary"}
+                            title={beingEdited? "Cancel":"Edit"}>
+                            {beingEdited ? <FontAwesomeIcon icon={faBan}/> : <FontAwesomeIcon icon={faPenToSquare} />}
                         </Button>
                     </Col>
-                    <Col className="table-col align-items-center d-flex justify-content-center" style={{ flexBasis: '20%' }}>
+                    <Col className="table-col align-items-center d-flex justify-content-center" xs='auto'>
                         {beingEdited ? (
                             <Button
                                 className="py-0 px-1"
                                 style={{ margin: '1px 0' }}
                                 type="submit"
-                                variant="outline-success">
-                                Submit
+                                variant="outline-success"
+                                title="Submit">
+                                <FontAwesomeIcon icon={faShareFromSquare} />
                             </Button>
                         ) : (
                             <Button
                                 onClick={() => handleDelete(id)}
                                 className="py-0 px-1"
                                 style={{ margin: '1px 0' }}
-                                variant="outline-danger">
-                                Delete
+                                variant="outline-danger"
+                                title="Delete">
+                                <FontAwesomeIcon icon={faTrashCan} />
                             </Button>
                         )}
                     </Col>

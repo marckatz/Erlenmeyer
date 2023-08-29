@@ -60,7 +60,7 @@ function Signup() {
 
     return (
         <>
-            <Button variant='outline-warning' onClick={handleShow} className='me-2'>
+            <Button variant='warning' onClick={handleShow} className='me-2'>
                 Sign Up
             </Button>
             <Modal
@@ -111,8 +111,8 @@ function Signup() {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="outline-success" type="submit" form="signupForm">Sign Up</Button>
-                    <Button variant="outline-secondary" onClick={handleClose}>Close</Button>
+                    <Button variant="success" type="submit" form="signupForm">Sign Up</Button>
+                    <Button variant="secondary" onClick={handleClose}>Close</Button>
                 </Modal.Footer>
             </Modal>
         </>

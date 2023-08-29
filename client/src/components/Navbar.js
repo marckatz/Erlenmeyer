@@ -45,8 +45,8 @@ function Navbar() {
                     <Nav>
                         {user ? (
                             <>
-                                <Link to='/profile'><Button variant="outline-primary" className="me-2">Profile</Button></Link>
-                                <Button variant="outline-danger" className="me-2" onClick={handleLogout}>Log Out</Button>
+                                <Link to='/profile'><Button variant="primary" className="me-2">Profile</Button></Link>
+                                <Button variant="danger" className="me-2" onClick={handleLogout}>Log Out</Button>
                             </>
                         ) : (
                             <>

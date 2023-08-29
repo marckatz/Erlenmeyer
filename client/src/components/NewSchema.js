@@ -9,6 +9,9 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import FloatingLabel from 'react-bootstrap/FloatingLabel'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
+
 function NewSchema({ setShowNewSchemaForm }) {
     const history = useHistory()
     const [newSchemaName, setNewSchemaName] = useState('')
@@ -50,7 +53,7 @@ function NewSchema({ setShowNewSchemaForm }) {
     }
 
     return (
-        <Form className="mt-3" noValidate onSubmit={handleNewSchema}>
+        <Form noValidate onSubmit={handleNewSchema}>
             <Form.Group as={Row} className="align-items-center position-relative" controlId="formSchemaName">
                 <Col sm='10'>
                     <Row>
@@ -74,7 +77,7 @@ function NewSchema({ setShowNewSchemaForm }) {
                     </Row>
                 </Col>
                 <Col sm='2'>
-                    <Button type="submit" variant="outline-primary">Submit</Button>
+                    <Button type="submit" variant="success"><FontAwesomeIcon icon={faPlus} /> Create Schema</Button>
                 </Col>
             </Form.Group>
         </Form>

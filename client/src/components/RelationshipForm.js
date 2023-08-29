@@ -2,19 +2,24 @@ import React, { useEffect, useState } from 'react'
 
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
+import Collapse from 'react-bootstrap/Collapse'
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus, faXmark, faAngleRight } from '@fortawesome/free-solid-svg-icons'
 
 function RelationshipForm({ tables, setRelationships }) {
     const [error, setError] = useState('')
+    const [show, setShow] = useState(false)
+
+    const [columnsFrom, setColumnsFrom] = useState([])
+    const [columnsTo, setColumnsTo] = useState([])
 
     const [selectedTableFrom, setSelectedTableFrom] = useState(0)
     const [selectedColumnFrom, setSelectedColumnFrom] = useState(0)
-    const [columnsFrom, setColumnsFrom] = useState([])
 
     const [selectedTableTo, setSelectedTableTo] = useState(0)
     const [selectedColumnTo, setSelectedColumnTo] = useState(0)
-    const [columnsTo, setColumnsTo] = useState([])
 
     useEffect(() => {
         const currentTable = tables.find(table => table.id === parseInt(selectedTableFrom))
@@ -35,11 +40,20 @@ function RelationshipForm({ tables, setRelationships }) {
         if (e.target.value === parseInt(selectedTableTo)) {
             setSelectedTableTo(0)
         }
+        if (selectedColumnFrom !== 0) {
+            document.getElementById('col' + selectedColumnFrom).classList.remove('beingSelected')
+        }
         setSelectedColumnFrom(0)
         setError('')
     }
 
     function handleColumnFromChange(e) {
+        if (selectedColumnFrom !== 0) {
+            document.getElementById('col' + selectedColumnFrom).classList.remove('beingSelected')
+        }
+        if (e.target.value !== 0) {
+            document.getElementById('col' + e.target.value).classList.add('beingSelected')
+        }
         setSelectedColumnFrom(e.target.value)
         setError('')
     }
@@ -51,10 +65,19 @@ function RelationshipForm({ tables, setRelationships }) {
     function handleTableToChange(e) {
         setSelectedTableTo(e.target.value)
         setSelectedColumnTo(0)
+        if (selectedColumnTo !== 0) {
+            document.getElementById('col' + selectedColumnTo).classList.remove('beingSelected')
+        }
         setError('')
     }
 
     function handleColumnToChange(e) {
+        if (selectedColumnTo !== 0) {
+            document.getElementById('col' + selectedColumnTo).classList.remove('beingSelected')
+        }
+        if (e.target.value !== 0) {
+            document.getElementById('col' + e.target.value).classList.add('beingSelected')
+        }
         setSelectedColumnTo(e.target.value)
         setError('')
     }
@@ -73,7 +96,19 @@ function RelationshipForm({ tables, setRelationships }) {
         })
             .then(r => {
                 if (r.ok) {
-                    r.json().then(rel => setRelationships(rels => [...rels, rel]))
+                    r.json().then(rel => {
+                        if (selectedColumnTo !== 0) {
+                            document.getElementById('col' + selectedColumnTo).classList.remove('beingSelected')
+                        }
+                        if (selectedColumnFrom !== 0) {
+                            document.getElementById('col' + selectedColumnFrom).classList.remove('beingSelected')
+                        }
+                        setRelationships(rels => [...rels, rel])
+                        setSelectedTableTo(0)
+                        setSelectedColumnTo(0)
+                        setSelectedTableFrom(0)
+                        setSelectedColumnFrom(0)
+                    })
                 }
                 else if (r.status === 400) {
                     setError('same table somehow')
@@ -87,43 +122,97 @@ function RelationshipForm({ tables, setRelationships }) {
 
     return (
         <>
-            <Form onSubmit={handleSubmit}>
-                <Row>
-                    <Form.Group as={Col} controlId='tableFrom'>
-                        <Form.Select onChange={handleTableFromChange} value={selectedTableFrom} isInvalid={!!error}>
-                            <option value={0} disabled>Select Table</option>
-                            {tableFromOptions}
-                        </Form.Select>
-                    </Form.Group>
-                    <Form.Group as={Col} controlId='tableTo'>
-                        <Form.Select onChange={handleTableToChange} value={selectedTableTo} isInvalid={!!error}>
-                            <option value={0} disabled>Select Table</option>
-                            {tableToOptions}
-                        </Form.Select>
-                    </Form.Group>
-                </Row>
-                <Row>
-                    <Form.Group as={Col} controlId='columnFrom' className='position-relative'>
-                        <Form.Select disabled={selectedTableFrom === 0} onChange={handleColumnFromChange} value={selectedColumnFrom} isInvalid={!!error}> 
-                            <option value={0} disabled>Select Column</option>
-                            {columnFromOptions}
-                        </Form.Select>
-                        <Form.Control.Feedback type='invalid' tooltip>
-                            {error}
-                        </Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group as={Col} controlId='columnTo' className='position-relative'>
-                        <Form.Select disabled={selectedTableTo === 0} onChange={handleColumnToChange} value={selectedColumnTo} isInvalid={!!error}>
-                            <option value={0} disabled>Select Column</option>
-                            {columnToOptions}
-                        </Form.Select>
-                        <Form.Control.Feedback type='invalid' tooltip>
-                            {error}
-                        </Form.Control.Feedback>
-                    </Form.Group>
-                </Row>
-                <Button type='submit' disabled={!(selectedColumnFrom && selectedTableFrom && selectedColumnTo && selectedTableTo)}>Submit</Button>
-            </Form>
+            <Collapse in={show}>
+                <div id='relFormWrapper'>
+                    <Form onSubmit={handleSubmit} id='relForm' className='d-flex align-items-center justify-content-between'>
+                        <div className='d-flex flex-column'>
+                            <Form.Group controlId='tableFrom' className='my-2'>
+                                <FloatingLabel label="Table">
+                                    <Form.Select
+                                        onChange={handleTableFromChange}
+                                        value={selectedTableFrom}
+                                        isInvalid={!!error}
+                                        className={selectedTableFrom === 0 ? 'text-muted' : ''}>
+                                        <option value={0} disabled>Select Table</option>
+                                        {tableFromOptions}
+                                    </Form.Select>
+                                </FloatingLabel>
+                            </Form.Group>
+                            <Form.Group controlId='columnFrom' className='position-relative mb-2'>
+                                <FloatingLabel label="Column">
+                                    <Form.Select
+                                        disabled={selectedTableFrom === 0}
+                                        onChange={handleColumnFromChange}
+                                        value={selectedColumnFrom}
+                                        isInvalid={!!error}
+                                        className={selectedColumnFrom === 0 ? 'text-muted' : ''}>
+                                        <option value={0} disabled>Select Column</option>
+                                        {columnFromOptions}
+                                    </Form.Select>
+                                </FloatingLabel>
+                                <Form.Control.Feedback type='invalid' tooltip>
+                                    {error}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                        </div>
+                        <div>
+                            <FontAwesomeIcon icon={faAngleRight} size='2xl' />
+                        </div>
+                        <div className='d-flex flex-column'>
+                            <Form.Group controlId='tableTo' className='my-2'>
+                                <FloatingLabel label="Table">
+                                    <Form.Select
+                                        onChange={handleTableToChange}
+                                        value={selectedTableTo}
+                                        isInvalid={!!error}
+                                        className={selectedTableTo === 0 ? 'text-muted' : ''}>
+                                        <option value={0} disabled>Select Table</option>
+                                        {tableToOptions}
+                                    </Form.Select>
+                                </FloatingLabel>
+                            </Form.Group>
+                            <Form.Group controlId='columnTo' className='position-relative mb-2'>
+                                <FloatingLabel label="Column">
+                                    <Form.Select
+                                        disabled={selectedTableTo === 0}
+                                        onChange={handleColumnToChange}
+                                        value={selectedColumnTo}
+                                        isInvalid={!!error}
+                                        className={selectedColumnTo === 0 ? 'text-muted' : ''}>
+                                        <option value={0} disabled >Select Column</option>
+                                        {columnToOptions}
+                                    </Form.Select>
+                                </FloatingLabel>
+                                <Form.Control.Feedback type='invalid' tooltip>
+                                    {error}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                        </div>
+                    </Form>
+                    <Button form='relForm' type='submit' disabled={!(selectedColumnFrom && selectedTableFrom && selectedColumnTo && selectedTableTo)}>Submit</Button>
+                </div>
+            </Collapse>
+            <Button
+                onClick={() => {
+                    setShow(!show)
+                    if (selectedColumnTo !== 0) {
+                        document.getElementById('col' + selectedColumnTo).classList.remove('beingSelected')
+                    }
+                    if (selectedColumnFrom !== 0) {
+                        document.getElementById('col' + selectedColumnFrom).classList.remove('beingSelected')
+                    }
+                    setSelectedTableTo(0)
+                    setSelectedColumnTo(0)
+                    setSelectedTableFrom(0)
+                    setSelectedColumnFrom(0)
+                }}
+                aria-controls="relFormWrapper"
+                aria-expanded={show}
+                className="my-1 py-0 px-1"
+                title={show ? 'Close' : 'New Relationship'}
+                variant={show ? "warning" : "success"}>
+                {show ? <FontAwesomeIcon icon={faXmark} /> : <FontAwesomeIcon icon={faPlus} />}
+            </Button>
         </>
     )
 }
