@@ -21,7 +21,7 @@ function Relationships({ schemaId, tables }) {
         document.getElementById('col' + relationships[i].to_one.id).classList.remove('lighten')
     }
 
-    const relationshipList = relationships.map((r, i) => <div onMouseOver={(e) => handleHover(e, i)} onMouseOut={(e) => handleOut(e, i)} key={i}>{r.from_many.table.name}.{r.from_many.name} &gt;--- {r.to_one.table.name}.{r.to_one.name}</div>)
+    const relationshipList = relationships.map((r, i) => <div onMouseOver={(e) => handleHover(e, i)} onMouseOut={(e) => handleOut(e, i)} key={i}>{r.from_many.table.name}.{r.from_many.name} ↣ {r.to_one.table.name}.{r.to_one.name}</div>)
 
     return (
         <>

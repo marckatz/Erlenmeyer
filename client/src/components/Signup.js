@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -12,7 +11,6 @@ import Form from 'react-bootstrap/Form'
 
 function Signup() {
     const { setUser } = useContext(UserContext)
-    const history = useHistory()
     const [usernameError, setUsernameError] = useState('')
     const [show, setShow] = useState(false);
 
@@ -46,7 +44,7 @@ function Signup() {
                     if (r.ok) {
                         r.json().then(data => {
                             setUser(data)
-                            history.push('/')
+                            handleClose()
                         })
                     }
                     else {

@@ -189,7 +189,7 @@ function RelationshipForm({ tables, setRelationships }) {
                             </Form.Group>
                         </div>
                     </Form>
-                    <Button form='relForm' type='submit' disabled={!(selectedColumnFrom && selectedTableFrom && selectedColumnTo && selectedTableTo)}>Submit</Button>
+                    <Button form='relForm' type='submit' variant='success' disabled={!(selectedColumnFrom && selectedTableFrom && selectedColumnTo && selectedTableTo)}><FontAwesomeIcon icon={faPlus} /> Add</Button>
                 </div>
             </Collapse>
             <Button

@@ -25,7 +25,7 @@ function SchemaCard({ schema }) {
 
     return (
         <Col>
-            <Card className='shadow'>
+            <Card className='shadow' style={{ height: '100%' }}>
                 <Card.Body>
                     <Link to={{ pathname: '/schema', state: { id } }} style={{ textDecoration: 'none' }}><Card.Title>{name}</Card.Title></Link>
                     <Card.Subtitle className='mb-2 text-muted text-truncate'>
