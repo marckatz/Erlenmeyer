@@ -45,7 +45,6 @@ function NewColumn({ tableId, setColumns }) {
                 .then(data => {
                     setColumns(c => [...c, data])
                     formik.resetForm()
-                    setShow(false)
                 })
         }
     })

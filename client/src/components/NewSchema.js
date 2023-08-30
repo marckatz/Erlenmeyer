@@ -44,11 +44,11 @@ function NewSchema({ setShowNewSchemaForm }) {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(newUS)
                 })
-                .then(a => {
-                    setShowNewSchemaForm && setShowNewSchemaForm(false)
-                    setNewSchemaName('')
-                    history.push('/schema', {id:newSchema.id })
-                })
+                    .then(a => {
+                        setShowNewSchemaForm && setShowNewSchemaForm(false)
+                        setNewSchemaName('')
+                        history.push('/schema', { id: newSchema.id })
+                    })
             })
     }
 

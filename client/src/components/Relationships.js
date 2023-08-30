@@ -26,7 +26,7 @@ function Relationships({ schemaId, tables }) {
     return (
         <>
             <div>{relationshipList}</div>
-            <RelationshipForm tables={tables} setRelationships={setRelationships} />
+            <RelationshipForm schemaId={schemaId} setRelationships={setRelationships} />
         </>
     )
 }

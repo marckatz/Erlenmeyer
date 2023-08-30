@@ -39,15 +39,15 @@ function ColumnCard({ column, handleDelete }) {
                     setName(values.newName)
                     setBeingEdited(false)
                     formik.resetForm({
-                        values:{
-                            newName:values.newName
+                        values: {
+                            newName: values.newName
                         }
                     })
                 })
         }
     })
 
-    function toggleEdited(){
+    function toggleEdited() {
         setBeingEdited(e => !e)
         formik.resetForm()
     }
@@ -77,8 +77,8 @@ function ColumnCard({ column, handleDelete }) {
                             className="py-0 px-1"
                             style={{ margin: '1px 0' }}
                             variant={beingEdited ? "outline-warning" : "outline-primary"}
-                            title={beingEdited? "Cancel":"Edit"}>
-                            {beingEdited ? <FontAwesomeIcon icon={faBan}/> : <FontAwesomeIcon icon={faPenToSquare} />}
+                            title={beingEdited ? "Cancel" : "Edit"}>
+                            {beingEdited ? <FontAwesomeIcon icon={faBan} /> : <FontAwesomeIcon icon={faPenToSquare} />}
                         </Button>
                     </Col>
                     <Col className="table-col align-items-center d-flex justify-content-center" xs='auto'>

@@ -8,9 +8,11 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faXmark, faAngleRight } from '@fortawesome/free-solid-svg-icons'
 
-function RelationshipForm({ tables, setRelationships }) {
+function RelationshipForm({ schemaId, setRelationships }) {
     const [error, setError] = useState('')
     const [show, setShow] = useState(false)
+
+    const [tables, setTables] = useState([])
 
     const [columnsFrom, setColumnsFrom] = useState([])
     const [columnsTo, setColumnsTo] = useState([])
@@ -22,14 +24,24 @@ function RelationshipForm({ tables, setRelationships }) {
     const [selectedColumnTo, setSelectedColumnTo] = useState(0)
 
     useEffect(() => {
+        if (schemaId) {
+            fetch(`/schemas/${schemaId}`)
+                .then(r => r.json())
+                .then(s => {
+                    setTables(s.tables)
+                })
+        }
+    }, [show, schemaId])
+
+    useEffect(() => {
         const currentTable = tables.find(table => table.id === parseInt(selectedTableFrom))
         currentTable ? setColumnsFrom(currentTable.columns) : setColumnsFrom([])
-    }, [selectedTableFrom, tables])
+    }, [selectedTableFrom, tables, show])
 
     useEffect(() => {
         const currentTable = tables.find(table => table.id === parseInt(selectedTableTo))
         currentTable ? setColumnsTo(currentTable.columns) : setColumnsTo([])
-    }, [selectedTableTo, tables])
+    }, [selectedTableTo, tables, show])
 
     const tableFromOptions = tables.filter(table => table.id !== parseInt(selectedTableTo)).map(table => <option key={table.id} value={table.id}>{table.name}</option>)
 
