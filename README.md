@@ -20,6 +20,10 @@ An interactive UI for building database models for use with Python's `Flask` lib
 - create relationships between tables by connecting two columns together
 - export the schema as a `models.py` file for use in your Flask project!
 
+## Database Schema
+![schema](https://github.com/marckatz/Erlenmeyer/assets/5956327/e73ddf96-68d5-4c45-aba9-96318f5f2b93)
+
+
 ## Author
 #### Marc Katz
 LinkedIn: https://www.linkedin.com/in/marc-katz-a28018103/
