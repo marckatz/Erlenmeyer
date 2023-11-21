@@ -1,8 +1,8 @@
-"""create models
+"""create tables, postgresql
 
-Revision ID: 8e778f77d890
+Revision ID: a6cd74f5c2c0
 Revises: 
-Create Date: 2023-08-13 00:52:20.253681
+Create Date: 2023-11-21 17:39:57.304988
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '8e778f77d890'
+revision = 'a6cd74f5c2c0'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -21,19 +21,21 @@ def upgrade():
     op.create_table('schemas',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(), nullable=True),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_schemas'))
     )
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('username', sa.String(), nullable=True),
-    sa.PrimaryKeyConstraint('id')
+    sa.Column('_password_hash', sa.String(), nullable=False),
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_users')),
+    sa.UniqueConstraint('username', name=op.f('uq_users_username'))
     )
     op.create_table('tables',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('schema_id', sa.Integer(), nullable=True),
     sa.Column('name', sa.String(), nullable=True),
     sa.ForeignKeyConstraint(['schema_id'], ['schemas.id'], name=op.f('fk_tables_schema_id_schemas')),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_tables'))
     )
     op.create_table('user_schemas',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -41,7 +43,8 @@ def upgrade():
     sa.Column('schema_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['schema_id'], ['schemas.id'], name=op.f('fk_user_schemas_schema_id_schemas')),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], name=op.f('fk_user_schemas_user_id_users')),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_user_schemas')),
+    sa.UniqueConstraint('user_id', 'schema_id', name=op.f('uq_user_schemas_user_id'))
     )
     op.create_table('columns',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -51,7 +54,7 @@ def upgrade():
     sa.Column('is_pk', sa.Boolean(), nullable=True),
     sa.Column('in_repr', sa.Boolean(), nullable=True),
     sa.ForeignKeyConstraint(['table_id'], ['tables.id'], name=op.f('fk_columns_table_id_tables')),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_columns'))
     )
     op.create_table('relationships',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -59,7 +62,8 @@ def upgrade():
     sa.Column('to_one_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['from_many_id'], ['columns.id'], name=op.f('fk_relationships_from_many_id_columns')),
     sa.ForeignKeyConstraint(['to_one_id'], ['columns.id'], name=op.f('fk_relationships_to_one_id_columns')),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_relationships')),
+    sa.UniqueConstraint('from_many_id', 'to_one_id', name=op.f('uq_relationships_from_many_id'))
     )
     # ### end Alembic commands ###
 

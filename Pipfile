@@ -13,6 +13,10 @@ flask-restful = "*"
 flask-cors = "*"
 faker = "*"
 flask-bcrypt = "*"
+gunicorn = "*"
+psycopg2-binary = "*"
+honcho = "*"
+python-dotenv = "*"
 
 [dev-packages]
 

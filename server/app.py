@@ -13,7 +13,7 @@ from models import User, UserSchema, Schema, Table, Column, Relationship
 
 @app.route("/")
 def index():
-    return "<h1>Phase 5 Project Server</h1>"
+    return "<h1>Erlenmeyer</h1>"
 
 class Users(Resource):
     def get(self):
@@ -223,5 +223,5 @@ def relationshipsBySchemaId(schema_id):
     relationships = [r.to_dict() for r in Relationship.query.join(Relationship.from_many).join(Column.table).filter_by(schema_id=schema_id).all()]
     return make_response(relationships, 200)
 
-if __name__ == '__main__':
-    app.run(port=5555, debug=True)
+# if __name__ == '__main__':
+#     app.run(port=5555, debug=True)
