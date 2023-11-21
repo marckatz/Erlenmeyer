@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # Remote library imports
-from flask import request, make_response, session
+from flask import request, make_response, session, render_template
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 
@@ -11,9 +11,9 @@ from config import app, db, api
 # Model imports
 from models import User, UserSchema, Schema, Table, Column, Relationship
 
-@app.route("/")
-def index():
-    return "<h1>Erlenmeyer</h1>"
+# @app.route("/")
+# def index():
+#     return "<h1>Erlenmeyer</h1>"
 
 class Users(Resource):
     def get(self):
@@ -222,6 +222,10 @@ def userByUsername(username):
 def relationshipsBySchemaId(schema_id):
     relationships = [r.to_dict() for r in Relationship.query.join(Relationship.from_many).join(Column.table).filter_by(schema_id=schema_id).all()]
     return make_response(relationships, 200)
+
+@app.errorhandler(404)
+def not_found(e):
+    return render_template("index.html")
 
 # if __name__ == '__main__':
 #     app.run(port=5555, debug=True)
